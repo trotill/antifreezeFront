@@ -1,0 +1,53 @@
+<script setup>
+
+import Main from './pages/Main.vue'
+import MobileDetect from 'mobile-detect'
+import { useStore } from 'vuex'
+import { computed, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+import { defaultRoute } from './router/routes.js'
+import eventSource from './api/eventSource.js'
+import { getToken } from './api/token.js'
+const router = useRouter()
+
+const md = new MobileDetect(window.navigator.userAgent)
+const body = document.getElementsByTagName('body')
+if (md.mobile()) {
+  body[0].style.width = 'fit-content'
+}
+const store = useStore()
+const authorized = computed(() => store.state.authorized)
+
+onMounted(async () => {
+  const ami = await store.dispatch('whoAmi')
+  if (!ami) {
+    // authorized.value = false
+    await router.push('/login')
+  } else {
+    await router.push(defaultRoute)
+
+    eventSource('/api/sse', store.commit)
+    // authorized.value = true
+    console.log('ami', ami)
+  }
+})
+
+</script>
+
+<template  >
+    <Main v-if="authorized" :mobile="!!md.mobile()"/>
+    <router-view name="unAuthorized"  />
+</template>
+
+<style lang="scss">
+
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  background-color: $dashboard-color;
+
+}
+
+</style>
