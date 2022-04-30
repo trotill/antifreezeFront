@@ -3,12 +3,12 @@
       <q-knob
         show-value
         font-size="18px"
-        v-model="humidity"
+        :model-value="humidity"
         size="60px"
         :thickness="0.22"
         :color="(humidity>80)?'red':'blue'"
-        min="0"
-        max="100"
+        :min="0"
+        :max="100"
         readonly
         track-color="grey-3"
         class="q-ma-md tempKnob"
@@ -21,13 +21,8 @@
 <script setup>
 
 import GroupContainer from './GroupContainer.vue'
-import { computed } from 'vue'
-import { useStore } from 'vuex'
-
-const store = useStore()
-
-const humidity = computed(() => {
-  return store.state.antifreezeState.md02Main.humi
+defineProps({
+  humidity: Number
 })
 
 </script>

@@ -1,12 +1,6 @@
 import httpRoute from '../api/http/route.js'
-import { Notify } from 'quasar'
+import { errorToast } from '../api/toast.js'
 
-function errorToast (message) {
-  Notify.create({
-    message,
-    type: 'negative'
-  })
-}
 export default {
   state () {
     return {

@@ -4,7 +4,7 @@
       dense
       class="dashboard-tab-main"
     >
-      <q-route-tab name="antifreeze" icon="extension" label="Antifreeze" to="/dashboard/antifreeze" exact/>
+      <q-route-tab name="footer" icon="extension" label="footer" to="/dashboard/footer" exact/>
       <q-route-tab name="alarms" icon="circle_notifications" label="Alarms" to="/dashboard/alarm" exact>
         <q-badge color="red" floating>0</q-badge>
       </q-route-tab>

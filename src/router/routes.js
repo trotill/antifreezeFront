@@ -5,11 +5,11 @@ import Profile from '../pages/Profile.vue'
 import Dashboard from '../pages/Dashboard.vue'
 import Setting from '../pages/Setting.vue'
 import Login from '../pages/Login.vue'
-import Antifreeze from '../pages/dashboard/Antifreeze.vue'
+import Footer from '../pages/dashboard/Footer.vue'
 import Alarm from '../pages/dashboard/Alarm.vue'
 import History from '../pages/dashboard/History.vue'
 
-export const defaultRoute = '/dashboard/antifreeze'
+export const defaultRoute = '/dashboard/footer'
 const routes = [
   { path: '/:pathMatch(.*)*', name: 'NotFound', component: Login },
   { path: '/', component: Dashboard },
@@ -18,9 +18,9 @@ const routes = [
     component: Dashboard,
     children: [
       {
-        path: 'antifreeze',
+        path: 'footer',
         components: {
-          dashboard: Antifreeze
+          dashboard: Footer
         }
       },
       {

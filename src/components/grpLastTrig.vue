@@ -1,18 +1,15 @@
 <template>
   <group-container :x-size="2" :y-size="1" label="Trigger time">
-      <textarea readonly class="lastTrigInput" color="white" rows="4" v-model="text"/>
+      <textarea readonly class="lastTrigInput"  rows="4" :value="text"/>
   </group-container>
 </template>
 
 <script setup>
 
 import GroupContainer from './GroupContainer.vue'
-import { computed } from 'vue'
-import { useStore } from 'vuex'
 
-const store = useStore()
-const text = computed(() => {
-  return store.state.antifreezeState.message.replaceAll('] ', ']\n')
+defineProps({
+  text: String
 })
 
 </script>

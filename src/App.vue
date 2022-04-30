@@ -16,7 +16,13 @@ if (md.mobile()) {
   body[0].style.width = 'fit-content'
 }
 const store = useStore()
-const authorized = computed(() => store.state.authorized)
+// let eventSourceRun = false
+const authorized = computed(() => {
+  if (store.state.authorized) {
+    eventSource('/api/sse', store.commit)
+  }
+  return store.state.authorized
+})
 
 onMounted(async () => {
   const ami = await store.dispatch('whoAmi')
@@ -26,7 +32,6 @@ onMounted(async () => {
   } else {
     await router.push(defaultRoute)
 
-    eventSource('/api/sse', store.commit)
     // authorized.value = true
     console.log('ami', ami)
   }

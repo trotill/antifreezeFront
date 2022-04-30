@@ -4,13 +4,13 @@
       <div class="input-main-label">{{label}}</div>
     </div>
     <div class="input-main-inputWrap" :class="{changed}">
-      <input :value="(!isFocus||readonly)?modelValue:editValue" @input="(event)=>updateValue(event.target.value)" @focusout="isFocus=false,editValue=''" @focusin="isFocus=true" class="input-main-input"  :readonly="readonly"/>
+      <input :value="(!changed)?modelValue:editValue" @input="(event)=>updateValue(event.target.value)" class="input-main-input"  :readonly="readonly"/>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, watch } from 'vue'
+import { ref } from 'vue'
 const props = defineProps({
   readonly: {
     type: Boolean,
@@ -29,26 +29,19 @@ console.log('input', props.modelValue)
 const calcFontSize = (v) => Math.trunc(18 - (v.toString().length / 8)) + 'px'
 
 const fontSize = ref(calcFontSize(props.modelValue))
-const isFocus = ref(false)
+
 const emit = defineEmits(['update:modelValue', 'update:changed'])
 const editValue = ref('')
 const roMarkerColor = ref('#590606')
 if (!props.readonly) { roMarkerColor.value = 'white' }
 
 function updateValue (v) {
-  if (isFocus.value) {
-    editValue.value = v
-    emit('update:changed', true)
-  }
+  editValue.value = v
+  emit('update:changed', true)
+
   fontSize.value = calcFontSize(v)
   emit('update:modelValue', v)
 }
-
-watch(() => props.modelValue, (newValue, oldValue) => {
-  if (!isFocus.value) {
-    updateValue(props.modelValue)
-  }
-})
 
 </script>
 

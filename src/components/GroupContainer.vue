@@ -2,7 +2,7 @@
   <div>
   <div class="groupContainer-label">{{label}}</div>
   <div class="groupContainer">
-    <div class="groupContainer-child">
+    <div class="groupContainer-child" :class="{'groupContainer-child-empty':empty}">
     <slot/>
     </div>
   </div>
@@ -20,7 +20,8 @@ const props = defineProps({
   ySize: {
     type: Number,
     default: 1
-  }
+  },
+  empty: Boolean
 })
 
 console.log('props.unit', props.xSize)
@@ -38,6 +39,10 @@ const height = ref(
   width: v-bind(width);
   height:v-bind(height);
   padding: 5px;
+  &-child-empty{
+    background-color: #0f1722;
+    border-color: #545454!important;
+  }
   &-child{
     display: flex;
     flex-wrap: nowrap;

@@ -2,7 +2,7 @@
   <group-container :x-size="4" :y-size="3" label="Pump realtime">
     <label-container label="Voltage (V)" :labelStyle="labelStyle">
       <q-range
-        v-model="pumpVoltage"
+        :model-value="pumpVoltage"
         :min="180"
         :max="320"
         vertical
@@ -22,7 +22,7 @@
     </label-container>
     <label-container label="Power (W)" :labelStyle="labelStyle">
       <q-range
-        v-model="pumpPower"
+        :model-value="pumpPower"
         :min="0"
         :max="1000"
         vertical
@@ -42,7 +42,7 @@
     </label-container>
     <label-container label="Current (A)" :labelStyle="labelStyle">
       <q-range
-        v-model="pumpCurrent"
+         :model-value="pumpCurrent"
         :min="0"
         :max="10"
         vertical
@@ -66,25 +66,16 @@
 <script setup>
 import LabelContainer from './LabelContainer.vue'
 import GroupContainer from './GroupContainer.vue'
-import { computed } from 'vue'
-import { useStore } from 'vuex'
 
-const store = useStore()
-
+defineProps({
+  pumpVoltage: Object,
+  pumpPower: Object,
+  pumpCurrent: Object
+})
 const labelStyle = {
   color: 'white',
   paddingBottom: '10px'
 }
-
-const pumpVoltage = computed(() => {
-  return { min: 100, max: store.state.antifreezeState.ac0.voltage }
-})
-const pumpPower = computed(() => {
-  return { min: 0, max: store.state.antifreezeState.ac0.power }
-})
-const pumpCurrent = computed(() => {
-  return { min: 0, max: store.state.antifreezeState.ac0.current }
-})
 
 </script>
 

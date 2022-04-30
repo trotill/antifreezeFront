@@ -63,7 +63,6 @@
 
 <script setup>
 import { onMounted, ref } from 'vue'
-import httpRoute from '../api/http/route.js'
 
 const props = defineProps({
   mobile: Boolean

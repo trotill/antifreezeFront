@@ -8,7 +8,7 @@ export default {
   async whoAmi () {
     return http.get('/api/whoAmi')
   },
-  async setDevData (data) {
-    return http.post('/api/setDevData', data)
+  async setDevData (data, type) {
+    return http.post(`/api/setDevData/?type=${type}`, data)
   }
 }

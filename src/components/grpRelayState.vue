@@ -19,18 +19,9 @@
 
 import GroupContainer from './GroupContainer.vue'
 import LabelContainer from './LabelContainer.vue'
-import { computed } from 'vue'
-import { useStore } from 'vuex'
 
-const store = useStore()
-
-const state = computed(() => {
-  return {
-    pump: store.state.antifreezeState.device.relayPumpAvail,
-    heater: store.state.antifreezeState.device.relayHeaterAvail,
-    v220: !store.state.antifreezeState.powerLoss,
-    pwrMeasure: store.state.antifreezeState.device.acAvail
-  }
+defineProps({
+  state: Object
 })
 
 const getColorByState = state => (state) ? 'green' : 'red'

@@ -1,6 +1,6 @@
 import { getToken, removeTokens, saveToken } from '../token.js'
 
-async function refreshToken () {
+export async function refreshToken () {
   return fetch(
     '/api/refresh', {
       method: 'GET',
