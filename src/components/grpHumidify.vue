@@ -1,5 +1,5 @@
 <template>
-  <group-container :x-size="1" :y-size="1" label="Humidity" >
+  <group-container :x-size="1" :y-size="1" label="Humid %" >
       <q-knob
         show-value
         font-size="18px"
@@ -13,7 +13,7 @@
         track-color="grey-3"
         class="q-ma-md tempKnob"
       >
-        {{ humidity }}%
+        {{ humidity }}
       </q-knob>
   </group-container>
 </template>

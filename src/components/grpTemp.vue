@@ -1,5 +1,5 @@
 <template>
-  <group-container :x-size="1" :y-size="1" label="Temp" >
+  <group-container :x-size="1" :y-size="1" label="Temp °C" >
 
       <q-knob
         show-value
@@ -14,7 +14,7 @@
         track-color="grey-3"
         class="q-ma-md tempKnob"
       >
-        {{ temperature }}°C
+        {{ temperature }}
       </q-knob>
 
   </group-container>
