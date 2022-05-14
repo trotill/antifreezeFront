@@ -6,6 +6,7 @@ export default {
     return {
       whoAmi: null,
       authorized: false,
+      isMobile: false,
       footerDogState: {
         relay: {
           relay12V: 0, // реле всей слаботочки
@@ -77,6 +78,9 @@ export default {
   mutations: {
     whoAmi (state, ami) {
       state.whoAmi = ami
+    },
+    setMobileMode (state, isMobile) {
+      state.isMobile = isMobile
     },
     authorized (state, auth) {
       state.authorized = auth

@@ -1,7 +1,7 @@
 <template>
   <div>
   <div class="groupContainer-label">{{label}}</div>
-  <div class="groupContainer">
+  <div class="groupContainer" >
     <div class="groupContainer-child" :class="{'groupContainer-child-empty':empty}">
     <slot/>
     </div>
@@ -11,6 +11,7 @@
 
 <script setup>
 import { ref } from 'vue'
+import { groupContainerStep } from '../api/const.js'
 const props = defineProps({
   label: String,
   xSize: {
@@ -21,15 +22,19 @@ const props = defineProps({
     type: Number,
     default: 1
   },
+  boardColor: {
+    type: String,
+    default: 'transparent'
+  },
   empty: Boolean
 })
 
 console.log('props.unit', props.xSize)
 const width = ref(
-  (props.xSize * 92) + 'px'
+  (props.xSize * groupContainerStep) + 'px'
 )
 const height = ref(
-  (props.ySize * 92) + 'px'
+  (props.ySize * groupContainerStep) + 'px'
 )
 </script>
 
@@ -56,6 +61,7 @@ const height = ref(
     height: 100%;
     align-content: center;
     flex-direction: row;
+    background-color: v-bind(boardColor);
   }
 }
 .groupContainer-label{

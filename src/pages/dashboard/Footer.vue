@@ -36,7 +36,9 @@
         <grp-string-info label="Reboot 12V line total" :value="wd.devRebootCntr"/>
       </div>
       <group-container :x-size="4" :y-size="1" empty/>
+
     </div>
+    <grp-graph-rt :big-size="!store.state.isMobile"/>
   </div>
 </template>
 
@@ -55,8 +57,10 @@ import GrpWdMode from '../../components/grpWdMode.vue'
 import GrpWdReset from '../../components/grpWdReset.vue'
 import GrpStringInfo from '../../components/grpStringInfo.vue'
 import GroupContainer from '../../components/GroupContainer.vue'
+import GrpGraphRt from '../../components/grpGraphRt.vue'
 import { computed } from 'vue'
 import { useStore } from 'vuex'
+
 const store = useStore()
 
 function toDeviceFabric (device) {
@@ -76,6 +80,7 @@ function toDeviceFabric (device) {
 
 const toDeviceAf = toDeviceFabric('antifreeze')
 const toDeviceWd = toDeviceFabric('footerDog')
+
 const af = computed(() => {
   return {
     pumpVoltage: { min: 180, max: store.state.antifreezeState.ac0.voltage },

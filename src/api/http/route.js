@@ -10,5 +10,8 @@ export default {
   },
   async setDevData (data, type) {
     return http.post(`/api/setDevData/?type=${type}`, data)
+  },
+  async getSensorList (data) {
+    return http.post('/api/sensorList', data)
   }
 }

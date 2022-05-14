@@ -9,13 +9,14 @@ import { defaultRoute } from './router/routes.js'
 import eventSource from './api/eventSource.js'
 import { getToken } from './api/token.js'
 const router = useRouter()
-
+const store = useStore()
 const md = new MobileDetect(window.navigator.userAgent)
 const body = document.getElementsByTagName('body')
 if (md.mobile()) {
   body[0].style.width = 'fit-content'
-}
-const store = useStore()
+  store.commit('setMobileMode', true)
+} else store.commit('setMobileMode', false)
+
 // let eventSourceRun = false
 const authorized = computed(() => {
   if (store.state.authorized) {
