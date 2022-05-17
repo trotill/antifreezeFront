@@ -53,7 +53,7 @@ async function xRequest (method, api, data = '') {
       }).catch(() => statusText)
     }
 
-    return res.json().then(errorBody => errorBody).catch(_ => ({ status, statusText }))
+    return res.json().then(errorBody => ({ statusText: errorBody.message ?? statusText, status })).catch(_ => ({ status, statusText }))
   })
 }
 

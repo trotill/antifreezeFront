@@ -13,5 +13,25 @@ export default {
   },
   async getSensorList (data) {
     return http.post('/api/sensorList', data)
+  },
+  async getEventList (data) {
+    return http.post('/api/eventList', data)
+  },
+  async setEventRead (eventId) {
+    return http.post(`/api/eventRead/${eventId}`, {})
+  },
+  async eventUnreadCount () {
+    return http.get('/api/eventUnreadCount')
+  },
+  async createUser (userData) {
+    const { password, login } = userData
+    userData.password = new jshashes.SHA1().b64(login + password)
+    return http.post('/api/user/', userData)
+  },
+  async changeUser (userData) {
+    return http.put('/api/user/', userData)
+  },
+  async changeUserGroup (userData) {
+    return http.put('/api/userGroup/', userData)
   }
 }

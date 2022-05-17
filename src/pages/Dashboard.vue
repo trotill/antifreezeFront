@@ -5,8 +5,8 @@
       class="dashboard-tab-main"
     >
       <q-route-tab name="footer" icon="extension" label="footer" to="/dashboard/footer" exact/>
-      <q-route-tab name="alarms" icon="circle_notifications" label="Alarms" to="/dashboard/alarm" exact>
-        <q-badge color="red" floating>0</q-badge>
+      <q-route-tab name="alarms" icon="circle_notifications" label="Events" to="/dashboard/alarm" exact>
+        <q-badge color="red" floating>{{unreadEvent}}</q-badge>
       </q-route-tab>
       <q-route-tab name="history" icon="timeline" label="History" to="/dashboard/history"/>
     </q-tabs>
@@ -15,10 +15,32 @@
 </template>
 
 <script setup>
-import { onMounted } from 'vue'
+import { onMounted, onUnmounted, ref } from 'vue'
+import rest from '../api/http/route.js'
+import { errorToast } from '../api/toast'
+import { useStore } from 'vuex'
+const store = useStore()
+const unreadEvent = ref(0)
 
-onMounted(() => {
+const unsubscribe = store.subscribe(async (mutation, state) => {
+  if (mutation.type === 'newEventState') {
+    await getUnreadEventCount()
+  }
+})
 
+async function getUnreadEventCount () {
+  const data = await rest.eventUnreadCount()
+  if (!data?.meta) {
+    errorToast('Error get unread event count')
+  } else {
+    unreadEvent.value = data.data
+  }
+}
+onMounted(async () => {
+  await getUnreadEventCount()
+})
+onUnmounted(async () => {
+  unsubscribe()
 })
 </script>
 

@@ -14,6 +14,7 @@ import rest from '../api/http/route.js'
 import GroupContainer from '../components/GroupContainer.vue'
 import { onMounted, reactive } from 'vue'
 import { errorToast } from '../api/toast'
+import zoomPlugin from 'chartjs-plugin-zoom'
 
 const prop = defineProps({
   bigSize: {
@@ -22,15 +23,45 @@ const prop = defineProps({
   }
 })
 
+/* const rtDataLocal = reactive({
+  voltage: 0,
+  power: 0,
+  current: 0,
+  temp: 0,
+  humidity: 0
+}) */
+
 const containerStep = groupContainerStep
 const graphWidth = (prop.bigSize) ? 12 : 4
 const graphHeight = (prop.bigSize) ? 4 : 3
 Chart.register(...registerables)
+Chart.register(zoomPlugin)
 const options = {
+  maintainAspectRatio: false,
+  responsive: true,
   plugins: {
     title: {
-      text: 'Realtime sensor data',
+      text: 'Realtime sensor data (last day preload)',
       display: true
+    },
+    hover: {
+      mode: 'nearest',
+      intersect: true
+    },
+    zoom: {
+      pan: {
+        enabled: true,
+        mode: 'x'
+      },
+      zoom: {
+        wheel: {
+          enabled: true
+        },
+        pinch: {
+          enabled: true
+        },
+        mode: 'x'
+      }
     }
   },
   scales: {
@@ -101,11 +132,12 @@ const chartData = reactive({
 function rawToXY (sensor, ts) {
   return sensor.map((v, idx) => ({ x: ts[idx], y: v }))
 }
-onMounted(async () => {
+
+async function sensorDataRequest ({ sec = 60, concat = true } = {}) {
   const sensorData = await rest.getSensorList({
     where: {
       ts: {
-        $lte: Date.now() - (86400 * 1000)
+        $gte: Date.now() - (sec * 1000)
       },
       avgMin: {
         $ne: null
@@ -117,14 +149,24 @@ onMounted(async () => {
   if (!sensorData?.meta) {
     errorToast('Error read sensor data')
   } else {
-    console.log('sensorData', sensorData)
-    const { voltage, ts, power, current, temp, humidity } = sensorData.data
-    chartData.datasets[0].data = rawToXY(voltage, ts)
-    chartData.datasets[1].data = rawToXY(power, ts)
-    chartData.datasets[2].data = rawToXY(current, ts)
-    chartData.datasets[3].data = rawToXY(temp, ts)
-    chartData.datasets[4].data = rawToXY(humidity, ts)
+    ['voltage', 'power', 'current', 'temp', 'humidity'].forEach((name, idx) => {
+      if (concat) {
+        if (sensorData.data[name].length > 0) {
+          const sensorDataOldestItem = { y: sensorData.data[name][0], x: sensorData.data.ts[0] }
+          chartData.datasets[idx].data.push(sensorDataOldestItem)
+        }
+      } else {
+        chartData.datasets[idx].data = rawToXY(sensorData.data[name], sensorData.data.ts)
+      }
+    })
   }
+}
+setInterval(async () => {
+  chartData.datasets.forEach(({ data }) => data.shift())
+  await sensorDataRequest()
+}, 60000)
+onMounted(async () => {
+  await sensorDataRequest({ sec: 86400, concat: false })
 })
 </script>
 

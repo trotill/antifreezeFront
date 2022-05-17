@@ -15,7 +15,20 @@ export default function fetchEventSourceWrap (route, commit) {
         console.log('fetchEventSource response', response)
       },
       onmessage ({ event: topic, data }) {
-        if (topic === '/srv/footerDog') { commit('footerDogState', JSON.parse(data)) } else { commit('antifreezeState', JSON.parse(data)) }
+        switch (topic) {
+          case '/srv/footerDog':{
+            commit('footerDogState', JSON.parse(data))
+            break
+          }
+          case '/srv/antiFreeze':{
+            commit('antifreezeState', JSON.parse(data))
+            break
+          }
+          case 'eventBroad':{
+            commit('newEventState', JSON.parse(data))
+            break
+          }
+        }
       },
       onclose () {
       // if the server closes the connection unexpectedly, retry:

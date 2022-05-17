@@ -46,25 +46,32 @@
       </q-card-section>
       <q-separator />
       <q-card-actions align="center">
+        <div class="signIn">
+          <a class="signIn-a" @click="registerShow=true">register new</a>
+        </div>
         <q-btn
           :disable="!isValidAll"
           class="login-button"
           label="Login"
-
           @click="doLogin"
         />
+
       </q-card-actions>
     </q-card>
+    <q-dialog v-model="registerShow">
+      <register-form :close="()=>registerShow=false"/>
+    </q-dialog>
   </div>
 </template>
 
 <script setup>
 
-import { onMounted, ref } from 'vue'
+import { onMounted, reactive, ref } from 'vue'
 import { useStore } from 'vuex'
 import { useQuasar } from 'quasar'
 import { useRouter } from 'vue-router'
 import { defaultRoute } from '../router/routes.js'
+import RegisterForm from '../components/registerForm.vue'
 const router = useRouter()
 
 const $q = useQuasar()
@@ -72,6 +79,7 @@ const store = useStore()
 const login = ref('')
 const password = ref('')
 const isPwd = ref(true)
+const registerShow = ref(false)
 
 function isValid (val) {
   return val.length >= 3
@@ -84,10 +92,10 @@ async function doLogin () {
   if (isValidAll()) {
     if (await store.dispatch('login', { login: login.value, password: password.value })) {
       router.push(defaultRoute)
+      return
     }
-  } else {
-    $q.notify({ message: 'input error, check login/password', type: 'negative' })
   }
+  $q.notify({ message: 'input error, check login/password', type: 'negative' })
 }
 
 onMounted(async () => {
@@ -130,5 +138,17 @@ $headerColor:#e1e1e1;
   align-items: center;
   font-size: 20px;
   justify-content: center;
+}
+.signIn{
+  padding-bottom: 10px;
+  &-a{
+    font-size: 16px;
+    cursor: pointer;
+    color: #1680d7;
+    font-variant: all-petite-caps;
+  }
+  &-a:hover{
+    color: #0d47a1;
+  }
 }
 </style>

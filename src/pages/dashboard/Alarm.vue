@@ -1,11 +1,15 @@
 <template>
   <div class="alarm-main">
-    <div class="alarm-main_block"></div>
+    <event-table :big-size="!store.state.isMobile"/>
   </div>
 </template>
 
 <script setup>
 
+import EventTable from '../../components/eventTable.vue'
+
+import { useStore } from 'vuex'
+const store = useStore()
 </script>
 
 <style scoped>
@@ -17,9 +21,5 @@
   width: 100%;
   height: 100%;
 }
-.alarm-main_block{
-  width: 100px;
-  height: 100px;
-  background-color: yellow;
-}
+
 </style>

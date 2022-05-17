@@ -7,6 +7,7 @@ export default {
       whoAmi: null,
       authorized: false,
       isMobile: false,
+      newEventState: [],
       footerDogState: {
         relay: {
           relay12V: 0, // реле всей слаботочки
@@ -90,11 +91,15 @@ export default {
     },
     antifreezeState (state, payload) {
       state.antifreezeState = payload
+    },
+    newEventState (state, payload) {
+      state.newEventState = payload
     }
   },
   actions: {
     async login ({ commit }, { login, password }) {
       const result = await httpRoute.login({ login, password })
+
       if (result.meta) {
         if (result.meta.error) {
           commit('authorized', false)
@@ -104,6 +109,8 @@ export default {
           commit('authorized', true)
           return true
         }
+      } else {
+        commit('authorized', false)
       }
       return null
     },
