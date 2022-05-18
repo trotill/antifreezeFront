@@ -23,7 +23,7 @@ import GroupContainer from './GroupContainer.vue'
 import LabelContainer from './LabelContainer.vue'
 import { reactive } from 'vue'
 
-const props = defineProps({
+defineProps({
   dialog: {
     type: Boolean,
     default: false

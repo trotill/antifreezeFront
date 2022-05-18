@@ -1,5 +1,5 @@
 <template>
-  <group-container board-color='black' :x-size="graphWidth" :y-size="graphHeight">
+  <group-container board-color='black' :x-size="graphWidth" :y-size="graphHeight" v-show="readyShow">
     <div class="tableContainer">
     <q-table
       style="height: 100%"
@@ -57,9 +57,7 @@ import rest from '../api/http/route.js'
 import { errorToast } from '../api/toast'
 import eventDescriptionList from '../api/eventList.js'
 import { useStore } from 'vuex'
-import { useQuasar } from 'quasar'
 
-const $q = useQuasar()
 const store = useStore()
 const pagination = ref({
   rowsPerPage: 10,
@@ -68,7 +66,7 @@ const pagination = ref({
   sortBy: 'ts',
   descending: true
 })
-
+const readyShow = ref(false)
 const filterDate = ref(null)
 const formattedFilterDate = computed(() => {
   if (!filterDate.value) {
@@ -141,7 +139,7 @@ function parseEventDescription ({ value, eventId }) {
   return descriptionTmp
 }
 
-const unsubscribe = store.subscribe((mutation, state) => {
+const unsubscribe = store.subscribe((mutation) => {
   if (mutation.type === 'newEventState') {
     eventDataRequest()
   }
@@ -175,15 +173,14 @@ async function eventDataRequest () {
 async function readClick (id) {
   const result = await rest.setEventRead(id)
   if (result.statusText) {
-    console.log('result', result)
-    $q.notify({ message: `${result.statusText} (${result.status})`, type: 'negative' })
+    errorToast(`${result.statusText} (${result.status})`)
   }
   await eventDataRequest()
   store.commit('newEventState', [])
 }
 onMounted(async () => {
-  onRequest({ pagination: pagination.value })
-  // await eventDataRequest()
+  await onRequest({ pagination: pagination.value })
+  readyShow.value = true
 })
 </script>
 

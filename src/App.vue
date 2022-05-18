@@ -7,7 +7,7 @@ import { computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { defaultRoute } from './router/routes.js'
 import eventSource from './api/eventSource.js'
-import { getToken } from './api/token.js'
+
 const router = useRouter()
 const store = useStore()
 const md = new MobileDetect(window.navigator.userAgent)
@@ -17,7 +17,6 @@ if (md.mobile()) {
   store.commit('setMobileMode', true)
 } else store.commit('setMobileMode', false)
 
-// let eventSourceRun = false
 const authorized = computed(() => {
   if (store.state.authorized) {
     eventSource('/api/sse', store.commit)
@@ -27,14 +26,9 @@ const authorized = computed(() => {
 
 onMounted(async () => {
   const ami = await store.dispatch('whoAmi')
+  console.log('ami', ami)
   if (!ami) {
-    // authorized.value = false
     await router.push('/login')
-  } else {
-    await router.push(defaultRoute)
-
-    // authorized.value = true
-    console.log('ami', ami)
   }
 })
 

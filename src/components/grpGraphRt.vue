@@ -39,6 +39,9 @@ Chart.register(zoomPlugin)
 const options = {
   maintainAspectRatio: false,
   responsive: true,
+  animation: {
+    duration: 0
+  },
   plugins: {
     title: {
       text: 'Realtime sensor data (last day preload)',

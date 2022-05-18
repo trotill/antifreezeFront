@@ -6,7 +6,7 @@ import Dashboard from '../pages/Dashboard.vue'
 import Setting from '../pages/Setting.vue'
 import Login from '../pages/Login.vue'
 import Footer from '../pages/dashboard/Footer.vue'
-import Alarm from '../pages/dashboard/Alarm.vue'
+import Event from '../pages/dashboard/Event.vue'
 import History from '../pages/dashboard/History.vue'
 
 export const defaultRoute = '/dashboard/footer'
@@ -24,9 +24,9 @@ const routes = [
         }
       },
       {
-        path: 'alarm',
+        path: 'event',
         components: {
-          dashboard: Alarm
+          dashboard: Event
         }
       },
       {

@@ -17,6 +17,12 @@ export default {
   async getEventList (data) {
     return http.post('/api/eventList', data)
   },
+  async getUser () {
+    return http.get('/api/user')
+  },
+  async getUserList () {
+    return http.get('/api/userList')
+  },
   async setEventRead (eventId) {
     return http.post(`/api/eventRead/${eventId}`, {})
   },
@@ -29,6 +35,8 @@ export default {
     return http.post('/api/user/', userData)
   },
   async changeUser (userData) {
+    const { password, login } = userData
+    userData.password = new jshashes.SHA1().b64(login + password)
     return http.put('/api/user/', userData)
   },
   async changeUserGroup (userData) {

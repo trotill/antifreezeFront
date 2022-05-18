@@ -1,7 +1,8 @@
 $group-border-color:#a3f2ff;
 $dashboard-color:#141f2f;
+$profileElementWidth:358px;
 .controlButtonSize{
-  width: 358px;
+  width: $profileElementWidth;
   height: 40px;
 }
 

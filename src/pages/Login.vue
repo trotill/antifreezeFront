@@ -66,15 +66,13 @@
 
 <script setup>
 
-import { onMounted, reactive, ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useStore } from 'vuex'
-import { useQuasar } from 'quasar'
 import { useRouter } from 'vue-router'
 import { defaultRoute } from '../router/routes.js'
 import RegisterForm from '../components/registerForm.vue'
+import { errorToast } from '../api/toast'
 const router = useRouter()
-
-const $q = useQuasar()
 const store = useStore()
 const login = ref('')
 const password = ref('')
@@ -91,17 +89,18 @@ function isValidAll () {
 async function doLogin () {
   if (isValidAll()) {
     if (await store.dispatch('login', { login: login.value, password: password.value })) {
-      router.push(defaultRoute)
+      await store.dispatch('whoAmi')
+      await router.push(defaultRoute)
       return
     }
   }
-  $q.notify({ message: 'input error, check login/password', type: 'negative' })
+  errorToast('input error, check login/password')
 }
 
 onMounted(async () => {
   const ami = await store.dispatch('whoAmi')
   if (ami) {
-    router.push(defaultRoute)
+    await router.push(defaultRoute)
   }
 })
 
@@ -133,7 +132,7 @@ $headerColor:#e1e1e1;
   background-color: #5c5a5a;
   color: $headerColor;
   height: 40px;
-  padding: 0px;
+  padding: 0;
   display: flex;
   align-items: center;
   font-size: 20px;

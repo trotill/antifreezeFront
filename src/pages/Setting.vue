@@ -40,7 +40,7 @@
       </group-container>
     </div>
 
-    <q-btn class="sendButton controlButtonSize" color="blue-5" label="Send changed data" @click="sendClick" />
+    <q-btn class="sendButton controlButtonSize" color="grey-10" label="Send changed data" @click="sendClick" />
 
   </div>
 </template>
@@ -48,7 +48,7 @@
 <script setup>
 import GroupContainer from '../components/GroupContainer.vue'
 import Input from '../components/Input.vue'
-import { reactive, computed, ref, onMounted } from 'vue'
+import { computed, ref, onMounted } from 'vue'
 import { useStore } from 'vuex'
 import Rest from '../api/http/route'
 import { errorToast } from '../api/toast'
@@ -114,14 +114,6 @@ onMounted(() => {
   heaterWorkTimeInput.value = antifreeze.value.heaterWorkTime
   pumpWorkTimeInput.value = antifreeze.value.pumpWorkTime
 })
-/* const antifreeze = reactive({
-  ip: '0.0.0.0',
-  reboot: 0,
-  SWversion: 'Fri Mar 25 00:23:21 2022',
-  freeMem: 100000,
-  wifiRssi: -74,
-  wifiCh: 1
-}) */
 
 </script>
 

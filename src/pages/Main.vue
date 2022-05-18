@@ -21,7 +21,7 @@
     >
       <q-scroll-area class="fit leftSide_main" >
         <q-list padding @click="hideDrawerClick">
-          <q-item clickable v-ripple to="/dashboard/antifreeze">
+          <q-item clickable v-ripple to="/dashboard/footer">
             <q-item-section avatar>
               <q-icon name="maps_home_work" />
             </q-item-section>
@@ -51,7 +51,6 @@
           </q-item>
         </q-list>
       </q-scroll-area>
-      <!-- drawer content -->
     </q-drawer>
 
     <q-page-container class="pageContainer">
@@ -62,7 +61,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue'
+import { ref } from 'vue'
 
 const props = defineProps({
   mobile: Boolean
@@ -79,11 +78,6 @@ function hideDrawerClick () {
     leftDrawerOpen.value = false
   } else { hideLeftSide.value = true }
 }
-
-onMounted(async () => {
-  // const result = await httpRoute.login({ login: 'admin', password: 'admin' })
-  // console.log('result', result)
-})
 
 </script>
 

@@ -29,7 +29,6 @@ const props = defineProps({
   empty: Boolean
 })
 
-console.log('props.unit', props.xSize)
 const width = ref(
   (props.xSize * groupContainerStep) + 'px'
 )
@@ -42,7 +41,7 @@ const height = ref(
 
 .groupContainer{
   width: v-bind(width);
-  height:v-bind(height);
+  height: v-bind(height);
   padding: 5px;
   &-child-empty{
     background-color: #0f1722;
@@ -51,7 +50,7 @@ const height = ref(
   &-child{
     display: flex;
     flex-wrap: nowrap;
-    margin: 5px 0px 0px 0px;
+    margin: 5px 0 0 0;
     justify-content: space-evenly;
     border-style: solid;
     border-width: 1px;
@@ -70,10 +69,7 @@ const height = ref(
   background-color: $dashboard-color;
   width: max-content;
   margin-bottom: -5;
-  /* bottom: -17px; */
   position: absolute;
-  /* z-index: 222; */
-  /* left: 10px; */
   padding: 0 5px 0 5px;
   font-size: 14px;
   margin-left: 15px;

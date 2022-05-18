@@ -2,10 +2,10 @@
   <q-card>
 
     <q-card-section>
-      <div class="text-h6">User registration</div>
+      <div class="text-h6">{{(create)?'User registration':'User profile edit'}}</div>
     </q-card-section>
 
-    <q-card-section class="q-gutter-md" >
+    <q-card-section class="q-gutter-md" @keypress.enter="onClick">
       <div class="q-gutter-md row">
         <q-input
           filled
@@ -81,22 +81,31 @@
 
 <script setup>
 import { reactive, ref } from 'vue'
-import { useQuasar } from 'quasar'
-import rest from '../api/http/route.js'
-const $q = useQuasar()
 
-const registerNew = reactive({
-  login: '',
-  password: '',
-  passwordCopy: '',
-  firstName: '',
-  lastName: '',
-  email: ''
-})
+import rest from '../api/http/route.js'
+
+import { errorToast } from '../api/toast'
+
 const prop = defineProps({
+  create: {
+    type: Boolean,
+    default: true
+  },
+  defaultData: {
+    type: Object
+  },
   close: {
     type: Function
   }
+})
+
+const registerNew = reactive({
+  login: prop.defaultData?.login ?? '',
+  password: '',
+  passwordCopy: '',
+  firstName: prop.defaultData?.firstName ?? '',
+  lastName: prop.defaultData?.lastName ?? '',
+  email: prop.defaultData?.email ?? ''
 })
 const firstNameRef = ref(null)
 const lastNameRef = ref(null)
@@ -116,12 +125,10 @@ const passwordRules = [
 ]
 const emailRef = ref(null)
 const emailRules = [
-  val => (val && (val.length >= 2) && /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(val)) || 'Check email'
+  val => (val && (val.length >= 2) && /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(val)) || 'Check email'
 ]
 
 async function onClick () {
-  console.log('onClick')
-
   firstNameRef.value.validate()
   lastNameRef.value.validate()
   emailRef.value.validate()
@@ -129,7 +136,7 @@ async function onClick () {
   passwordRef.value.validate()
   loginRef.value.validate()
   if ((registerNew.passwordCopy !== registerNew.password)) {
-    $q.notify({ message: 'error, passwords must be the same', type: 'negative' })
+    errorToast('error, passwords must be the same')
     return
   }
   if (firstNameRef.value.hasError ||
@@ -139,23 +146,21 @@ async function onClick () {
     passwordRef.value.hasError ||
     loginRef.value.hasError
   ) {
-    console.log('error')
-    $q.notify({ message: 'input error, check data', type: 'negative' })
+    errorToast('input error, check data')
   } else {
-    console.log('success')
-    const result = await rest.createUser({
+    const result = await rest[(prop.create) ? 'createUser' : 'changeUser']({
       login: registerNew.login,
       password: registerNew.password,
       firstName: registerNew.firstName,
       lastName: registerNew.lastName,
       email: registerNew.email
     })
+
     if (result.statusText) {
-      $q.notify({ message: `${result.statusText} (${result.status})`, type: 'negative' })
+      errorToast(`${result.statusText} (${result.status})`)
     } else {
       prop.close()
     }
-    console.log('result', result)
   }
 }
 </script>
