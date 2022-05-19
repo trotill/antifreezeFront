@@ -1,5 +1,5 @@
 <template>
-  <div class="antifreeze-main">
+  <div class="dashboardTabMain">
     <grp-pump-realtime :pump-current="af.pumpCurrent" :pump-voltage="af.pumpVoltage" :pump-power="af.pumpPower"  />
     <div class="flexColumn">
       <div class="flexRow">
@@ -44,20 +44,20 @@
 
 <script setup>
 
-import GrpPumpRealtime from '../../components/grpPumpRealtime.vue'
-import GrpPumpHeaterStatus from '../../components/grpPumpHeaterStatus.vue'
-import GrpModeAlgo from '../../components/grpModeAlgo.vue'
-import GrpTemp from '../../components/grpTemp.vue'
-import GrpHumidify from '../../components/grpHumidify.vue'
-import GrpRelayState from '../../components/grpRelayState.vue'
-import GrpLastTrig from '../../components/grpLastTrig.vue'
+import GrpPumpRealtime from '../../components/GrpPumpRealtime.vue'
+import GrpPumpHeaterStatus from '../../components/GrpPumpHeaterStatus.vue'
+import GrpModeAlgo from '../../components/GrpModeAlgo.vue'
+import GrpTemp from '../../components/GrpTemp.vue'
+import GrpHumidify from '../../components/GrpHumidify.vue'
+import GrpRelayState from '../../components/GrpRelayState.vue'
+import GrpLastTrig from '../../components/GrpLastTrig.vue'
 import Rest from '../../api/http/route.js'
 import { errorToast } from '../../api/toast.js'
-import GrpWdMode from '../../components/grpWdMode.vue'
-import GrpWdReset from '../../components/grpWdReset.vue'
-import GrpStringInfo from '../../components/grpStringInfo.vue'
+import GrpWdMode from '../../components/GrpWdMode.vue'
+import GrpWdReset from '../../components/GrpWdReset.vue'
+import GrpStringInfo from '../../components/GrpStringInfo.vue'
 import GroupContainer from '../../components/GroupContainer.vue'
-import GrpGraphRt from '../../components/grpGraphRt.vue'
+import GrpGraphRt from '../../components/GrpChartRt.vue'
 import { computed } from 'vue'
 import { useStore } from 'vuex'
 
@@ -117,14 +117,6 @@ const wd = computed(() => {
 </script>
 
 <style scoped>
-.antifreeze-main{
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-content: center;
-
-}
-
 .flexRow{
   display: flex;
   flex-direction: row

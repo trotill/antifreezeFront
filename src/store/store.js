@@ -7,6 +7,7 @@ export default {
       whoAmi: null,
       authorized: false,
       isMobile: false,
+      windowWidth: window.innerWidth,
       newEventState: [],
       footerDogState: {
         relay: {
@@ -82,6 +83,9 @@ export default {
     },
     setMobileMode (state, isMobile) {
       state.isMobile = isMobile
+    },
+    setWindowWidth (state, width) {
+      state.windowWidth = width
     },
     authorized (state, auth) {
       state.authorized = auth

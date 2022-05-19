@@ -86,7 +86,7 @@ import rest from '../api/http/route.js'
 
 import { errorToast } from '../api/toast'
 
-const prop = defineProps({
+const props = defineProps({
   create: {
     type: Boolean,
     default: true
@@ -100,12 +100,12 @@ const prop = defineProps({
 })
 
 const registerNew = reactive({
-  login: prop.defaultData?.login ?? '',
+  login: props.defaultData?.login ?? '',
   password: '',
   passwordCopy: '',
-  firstName: prop.defaultData?.firstName ?? '',
-  lastName: prop.defaultData?.lastName ?? '',
-  email: prop.defaultData?.email ?? ''
+  firstName: props.defaultData?.firstName ?? '',
+  lastName: props.defaultData?.lastName ?? '',
+  email: props.defaultData?.email ?? ''
 })
 const firstNameRef = ref(null)
 const lastNameRef = ref(null)
@@ -148,7 +148,7 @@ async function onClick () {
   ) {
     errorToast('input error, check data')
   } else {
-    const result = await rest[(prop.create) ? 'createUser' : 'changeUser']({
+    const result = await rest[(props.create) ? 'createUser' : 'changeUser']({
       login: registerNew.login,
       password: registerNew.password,
       firstName: registerNew.firstName,
@@ -159,7 +159,7 @@ async function onClick () {
     if (result.statusText) {
       errorToast(`${result.statusText} (${result.status})`)
     } else {
-      prop.close()
+      props.close()
     }
   }
 }

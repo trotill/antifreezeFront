@@ -86,6 +86,7 @@ function updateValue (v) {
   background-color: #454545;
   border-radius: 0px 5px 5px 0px;
   padding-left: 3px;
+  width: 100%;
 }
 .changed{
   background-color: #3f2121;

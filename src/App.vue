@@ -5,13 +5,14 @@ import MobileDetect from 'mobile-detect'
 import { useStore } from 'vuex'
 import { computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { defaultRoute } from './router/routes.js'
+
 import eventSource from './api/eventSource.js'
 
 const router = useRouter()
 const store = useStore()
 const md = new MobileDetect(window.navigator.userAgent)
 const body = document.getElementsByTagName('body')
+
 if (md.mobile()) {
   body[0].style.width = 'fit-content'
   store.commit('setMobileMode', true)
@@ -23,6 +24,10 @@ const authorized = computed(() => {
   }
   return store.state.authorized
 })
+
+window.onresize = function () {
+  store.commit('setWindowWidth', window.innerWidth)
+}
 
 onMounted(async () => {
   const ami = await store.dispatch('whoAmi')

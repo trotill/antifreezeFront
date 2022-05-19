@@ -59,7 +59,7 @@
       </q-card-actions>
     </q-card>
     <q-dialog v-model="registerShow">
-      <register-form :close="()=>registerShow=false"/>
+      <Register-form :close="()=>registerShow=false"/>
     </q-dialog>
   </div>
 </template>
@@ -70,7 +70,7 @@ import { onMounted, ref } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import { defaultRoute } from '../router/routes.js'
-import RegisterForm from '../components/registerForm.vue'
+import RegisterForm from '../components/RegisterForm.vue'
 import { errorToast } from '../api/toast'
 const router = useRouter()
 const store = useStore()

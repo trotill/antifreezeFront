@@ -1,10 +1,8 @@
 <template>
   <div class="profileMain" v-show="readyShow">
     <div class="userInfo q-mb-lg" >
-      <div class="userInfoHeader" >You info</div>
-      <div :key="idx" class="userInfoItem"  v-for="(userInfo,idx) in userInfoList">
-        {{userInfo}}
-      </div>
+      <div class="userInfoHeader" >About you</div>
+      <Input class="userInfoItem" :key="idx" :readonly="true" :label="userInfo[0]" :modelValue="userInfo[1]" v-for="(userInfo,idx) in userInfoList"/>
     </div>
     <q-table
       v-if="store.state.whoAmi.group==='admin'"
@@ -43,14 +41,15 @@
     <q-btn class="logoutBtn controlButtonSize" color="grey-10" label="Logout" @click="logoutClick"/>
 
     <q-dialog v-model="registerShow">
-      <register-form :close="closeRegisterDialog" :create="false" :default-data="editedUser"/>
+      <Register-form :close="closeRegisterDialog" :create="false" :default-data="editedUser"/>
     </q-dialog>
   </div>
 </template>
 
 <script setup>
 
-import RegisterForm from '../components/registerForm.vue'
+import RegisterForm from '../components/RegisterForm.vue'
+import Input from '../components/Input.vue'
 import { onMounted, ref, reactive } from 'vue'
 import rest from '../api/http/route.js'
 import { useStore } from 'vuex'
@@ -179,10 +178,10 @@ async function requestUserData () {
     }
   }
   userInfoList.value = []
-  userInfoList.value.push(`login - ${srcUserInfo.login}`)
-  userInfoList.value.push(`group - ${srcUserInfo.group}`)
-  userInfoList.value.push(`name - ${srcUserInfo.firstName} ${srcUserInfo.lastName}`)
-  userInfoList.value.push(`email - ${srcUserInfo.email}`)
+  userInfoList.value.push(['login', srcUserInfo.login])
+  userInfoList.value.push(['group', srcUserInfo.group])
+  userInfoList.value.push(['name', `${srcUserInfo.firstName} ${srcUserInfo.lastName}`])
+  userInfoList.value.push(['email', srcUserInfo.email])
 }
 onMounted(async () => {
   await requestUserData()
@@ -209,14 +208,12 @@ onMounted(async () => {
   width:$profileElementWidth;
   background-color: #323232;
   border-radius: 3px;
-  padding-bottom: 3px;
   font-size: 18px;
   color: #9b9b9b;
   text-align: left;
   box-shadow: 0 1px 5px rgb(0 0 0 / 20%), 0 2px 2px rgb(0 0 0 / 14%), 0 3px 1px -2px rgb(0 0 0 / 12%);
 }
 .userInfoItem{
-  padding: 0 10px 0 10px;
   border-style: solid;
   border-width: 1px;
   margin: 5px;
@@ -229,8 +226,6 @@ onMounted(async () => {
   padding:5px;
   text-align: center;
   background-color: #1b1b1b;
-
-  margin-bottom: 10px;
 }
 .tableUserMain{
   background-color: #333333;

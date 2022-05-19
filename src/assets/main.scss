@@ -9,3 +9,12 @@ $profileElementWidth:358px;
 .buttonDashboard {
   min-width: 80px
 }
+
+.dashboardTabMain{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-content: center;
+  width: 100%;
+  height: 100%;
+}

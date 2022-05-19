@@ -1,16 +1,18 @@
 <template>
   <div>
-  <div class="groupContainer-label">{{label}}</div>
-  <div class="groupContainer" >
-    <div class="groupContainer-child" :class="{'groupContainer-child-empty':empty}">
-    <slot/>
+    <div class="groupContainer-label">{{label}}</div>
+    <div class="groupContainer" :style="{
+      width:`${props.xSize * groupContainerStep}px`,
+      height:`${props.ySize * groupContainerStep}px`}" >
+      <div class="groupContainer-child" :class="{'groupContainer-child-empty':empty}">
+      <slot/>
+      </div>
     </div>
-  </div>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+
 import { groupContainerStep } from '../api/const.js'
 const props = defineProps({
   label: String,
@@ -29,19 +31,11 @@ const props = defineProps({
   empty: Boolean
 })
 
-const width = ref(
-  (props.xSize * groupContainerStep) + 'px'
-)
-const height = ref(
-  (props.ySize * groupContainerStep) + 'px'
-)
 </script>
 
 <style lang="scss" scoped>
 
 .groupContainer{
-  width: v-bind(width);
-  height: v-bind(height);
   padding: 5px;
   &-child-empty{
     background-color: #0f1722;

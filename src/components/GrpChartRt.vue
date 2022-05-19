@@ -1,97 +1,20 @@
 <template>
-  <group-container board-color='black' :x-size="graphWidth" :y-size="graphHeight">
-    <div class="graphRtMain">
-    <LineChart :chartData="chartData" :options="options" :width="graphWidth*containerStep" :height="graphHeight*containerStep"/>
-    </div>
-  </group-container>
+  <sensor-chart :big-size="bigSize" :chart-data="chartData" label="Realtime sensor data (last day preload)"/>
 </template>
 
 <script setup>
-import { LineChart } from 'vue-chart-3'
-import { Chart, registerables } from 'chart.js'
-import { groupContainerStep } from '../api/const.js'
 import rest from '../api/http/route.js'
-import GroupContainer from '../components/GroupContainer.vue'
 import { onMounted, reactive } from 'vue'
 import { errorToast } from '../api/toast'
-import zoomPlugin from 'chartjs-plugin-zoom'
+import { rawToXY } from '../api/util.js'
+import SensorChart from './SensorChart.vue'
 
-const prop = defineProps({
+defineProps({
   bigSize: {
     type: Boolean,
     default: false
   }
 })
-
-/* const rtDataLocal = reactive({
-  voltage: 0,
-  power: 0,
-  current: 0,
-  temp: 0,
-  humidity: 0
-}) */
-
-const containerStep = groupContainerStep
-const graphWidth = (prop.bigSize) ? 12 : 4
-const graphHeight = (prop.bigSize) ? 4 : 3
-Chart.register(...registerables)
-Chart.register(zoomPlugin)
-const options = {
-  maintainAspectRatio: false,
-  responsive: true,
-  animation: {
-    duration: 0
-  },
-  plugins: {
-    title: {
-      text: 'Realtime sensor data (last day preload)',
-      display: true
-    },
-    hover: {
-      mode: 'nearest',
-      intersect: true
-    },
-    zoom: {
-      pan: {
-        enabled: true,
-        mode: 'x'
-      },
-      zoom: {
-        wheel: {
-          enabled: true
-        },
-        pinch: {
-          enabled: true
-        },
-        mode: 'x'
-      }
-    }
-  },
-  scales: {
-    x: {
-      type: 'time',
-      ticks: {
-        color: '#3dcef1'
-      },
-      grid: {
-        display: true,
-        color: '#034104'
-      }
-    },
-    y: {
-      grid: {
-        color: '#034104'
-      },
-      ticks: {
-        color: '#3dcef1'
-      },
-      title: {
-        display: true,
-        text: 'value'
-      }
-    }
-  }
-}
 
 const chartData = reactive({
   datasets: [{
@@ -132,10 +55,6 @@ const chartData = reactive({
   ]
 })
 
-function rawToXY (sensor, ts) {
-  return sensor.map((v, idx) => ({ x: ts[idx], y: v }))
-}
-
 async function sensorDataRequest ({ sec = 60, concat = true } = {}) {
   const sensorData = await rest.getSensorList({
     where: {
@@ -174,8 +93,5 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-.graphRtMain{
 
-  margin: 10px;
-}
 </style>

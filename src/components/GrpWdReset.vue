@@ -3,7 +3,7 @@
     <label-container label="Reset 12V" >
       <q-btn class="buttonDashboard" dense color="red"
              glossy unelevated text-color="white" icon="power"
-             label="12V" @click="reset12V(0)"/>
+             label="12V" @click="reset12V(1)"/>
     </label-container>
     <label-container label="Self reset">
       <q-btn class="buttonDashboard" dense color="red"

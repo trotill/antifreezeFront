@@ -1,5 +1,5 @@
 <template>
-  <group-container board-color='black' :x-size="graphWidth" :y-size="graphHeight" v-show="readyShow">
+  <group-container board-color='black' :x-size="tableWidth" :y-size="tableHeight" v-show="readyShow">
     <div class="tableContainer">
     <q-table
       style="height: 100%"
@@ -16,23 +16,7 @@
     >
       <template v-slot:top>
         <div class="inputDateMain">
-        <q-input  dark outlined :model-value="formattedFilterDate.from+' - '+formattedFilterDate.to" readonly>
-          <template v-slot:append>
-            <q-icon name="event" color="white" class="cursor-pointer">
-              <q-popup-proxy  cover transition-show="scale" transition-hide="scale" @hide ="dateDialogClose">
-                <q-date dark range v-model="filterDate">
-                  <div class="row items-center justify-end">
-                    <q-btn v-close-popup label="Close" color="primary" flat />
-                  </div>
-                </q-date>
-              </q-popup-proxy>
-            </q-icon>
-          </template>
-          <template v-slot:prepend>
-            <q-icon name="close" color="white" class="cursor-pointer" @click="filterDate=null;dateDialogClose()">
-            </q-icon>
-          </template>
-        </q-input>
+         <Date-filter :close="dateDialogClose" v-model:filter-date="filterDate"/>
         </div>
       </template>
       <template v-slot:body="props">
@@ -51,12 +35,13 @@
 </template>
 
 <script setup>
-import { onMounted, ref, onUnmounted, computed } from 'vue'
+import { onMounted, ref, onUnmounted } from 'vue'
 import GroupContainer from './GroupContainer.vue'
 import rest from '../api/http/route.js'
 import { errorToast } from '../api/toast'
 import eventDescriptionList from '../api/eventList.js'
 import { useStore } from 'vuex'
+import DateFilter from './DateFilter.vue'
 
 const store = useStore()
 const pagination = ref({
@@ -68,21 +53,16 @@ const pagination = ref({
 })
 const readyShow = ref(false)
 const filterDate = ref(null)
-const formattedFilterDate = computed(() => {
-  if (!filterDate.value) {
-    return { from: 'YYYY/MM/DD', to: 'YYYY/MM/DD' }
-  }
-  return (filterDate.value?.from) ? filterDate.value : { from: filterDate.value, to: filterDate.value }
-})
-const prop = defineProps({
+
+const props = defineProps({
   bigSize: {
     type: Boolean,
     default: false
   }
 })
 const loading = ref(false)
-const graphWidth = (prop.bigSize) ? 8 : 4
-const graphHeight = (prop.bigSize) ? 6 : 6
+const tableWidth = (props.bigSize) ? 8 : 4
+const tableHeight = (props.bigSize) ? 6 : 6
 const columns = [
   { field: 'time', name: 'time', align: 'center', label: 'Date/Time', sortable: true },
   { field: 'description', name: 'description', align: 'left', label: 'Description', sortable: true },
@@ -113,10 +93,13 @@ async function onRequest (props) {
   eventListSqlRequest.limit = rowsPerPage || pagination.value.rowsNumber
   eventListSqlRequest.order = [[sortNameTable[sortBy] ?? 'ts', (descending) ? 'desc' : 'asc']]
   if (filterDate.value) {
+    console.log('filterDate.value', filterDate.value)
+    const from = filterDate.value?.from ?? new Date(filterDate.value).getTime()
+    const to = filterDate.value?.to ?? new Date(filterDate.value).getTime() + 86400000
     eventListSqlRequest.where = {
       ts: {
-        $gte: +new Date(filterDate.value.from),
-        $lte: +new Date(filterDate.value.to)
+        $gte: +new Date(from),
+        $lte: +new Date(to)
       }
     }
   } else {
@@ -202,9 +185,7 @@ onMounted(async () => {
   background-color: #333333;
   color: #ffffff;
 }
-.inputDateMain{
-  min-width: 320px;
-}
+
 ::v-deep(.q-icon){
   font-size: 40px!important;
 }
