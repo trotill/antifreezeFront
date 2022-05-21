@@ -1,4 +1,5 @@
 import { getToken, removeTokens, saveToken } from '../token.js'
+import { Loading } from 'quasar'
 
 export async function refreshToken () {
   return fetch(
@@ -57,20 +58,26 @@ async function xRequest (method, api, data = '') {
   })
 }
 
+async function xRequestWLoading (method, api, data) {
+  Loading.show()
+  const result = await xRequest(method, api, data)
+  Loading.hide()
+  return result
+}
 export default {
   async get (api) {
-    return xRequest('GET', api)
+    return xRequestWLoading('GET', api)
   },
 
   async post (api, data) {
-    return xRequest('POST', api, data)
+    return xRequestWLoading('POST', api, data)
   },
 
   async put (api, data) {
-    return xRequest('PUT', api, data)
+    return xRequestWLoading('PUT', api, data)
   },
 
   async delete (api, data) {
-    return xRequest('DELETE', api, data)
+    return xRequestWLoading('DELETE', api, data)
   }
 }
