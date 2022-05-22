@@ -19,7 +19,8 @@ app.use(Quasar, {
   config: {
     loading: {
       spinner: QSpinnerFacebook,
-      spinnerColor: 'blue'
+      spinnerColor: 'blue',
+      delay: 1000
     }
   }
 })
