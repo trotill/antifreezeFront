@@ -1,9 +1,6 @@
 <template>
   <div >
-    <q-tabs
-      dense
-      class="dashboard-tab-main"
-    >
+    <q-tabs dense class="dashboard-tab-main">
       <q-route-tab name="footer" icon="extension" label="footer" to="/dashboard/footer" exact/>
       <q-route-tab name="events" icon="circle_notifications" label="Events" to="/dashboard/event" exact>
         <q-badge color="red" floating>{{unreadEvent}}</q-badge>
@@ -22,7 +19,7 @@ import { useStore } from 'vuex'
 const store = useStore()
 const unreadEvent = ref(0)
 
-const unsubscribe = store.subscribe(async (mutation, state) => {
+const unsubscribe = store.subscribe(async (mutation) => {
   if (mutation.type === 'newEventState') {
     await getUnreadEventCount()
   }

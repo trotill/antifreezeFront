@@ -40,7 +40,7 @@ const filter = ref({
   date: null,
   sensorRange: { ...rangeDefault },
   average: {
-    label: 'None',
+    label: '',
     value: 'none'
   }
 })
@@ -128,7 +128,7 @@ async function sensorDataRequest () {
     group,
     offset: offset.value,
     limit: props.limit
-  })
+  }, true)
   if (!sensorData?.meta) {
     errorToast('Error read sensor data')
   } else {

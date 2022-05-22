@@ -6,7 +6,7 @@
 </template>
 
 <script setup>
-const props = defineProps({
+defineProps({
   label: String,
   labelStyle: {
     type: Object,
@@ -21,8 +21,5 @@ const props = defineProps({
 <style lang="scss" scoped>
   .label{
     font-size: 14px;
-    &-text{
-
-    }
   }
 </style>

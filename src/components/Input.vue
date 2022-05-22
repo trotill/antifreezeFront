@@ -25,11 +25,9 @@ const props = defineProps({
   changed: Boolean
 })
 
-console.log('input', props.modelValue)
 const calcFontSize = (v) => Math.trunc(18 - (v.toString().length / 8)) + 'px'
 
 const fontSize = ref(calcFontSize(props.modelValue))
-
 const emit = defineEmits(['update:modelValue', 'update:changed'])
 const editValue = ref('')
 const roMarkerColor = ref('#590606')
@@ -52,42 +50,42 @@ function updateValue (v) {
   border-width: 1px;
   border-color: #a8a8a8;
   border-radius: 5px;
-}
-.input-main-labelWrap{
-  background-color: #2b2b2b;
-  display: flex;
-  padding: 5px;
-  min-width: 130px;
-  justify-content: flex-end;
-  border-radius: 5px 0px 0px 5px;
-  border-right-style: solid;
-  border-width: 1px;
-  border-color: v-bind(roMarkerColor);
-}
-.input-main-label{
-  font-size: 18px;
-  color: #bebebe;
-}
-
-.input-main-input{
-  font-size: v-bind(fontSize);
-  width: 200px;
-  height: 20px;
-  color: #bebebe;
-  background-color: transparent;
-  border-style: none;
-  &:focus{
-    outline: none;
+  &-labelWrap{
+    background-color: #2b2b2b;
+    display: flex;
+    padding: 5px;
+    min-width: 130px;
+    justify-content: flex-end;
+    border-radius: 5px 0 0 5px;
+    border-right-style: solid;
+    border-width: 1px;
+    border-color: v-bind(roMarkerColor);
+  }
+  &-label{
+    font-size: 18px;
+    color: #bebebe;
+  }
+  &-input{
+    font-size: v-bind(fontSize);
+    width: 200px;
+    height: 20px;
+    color: #bebebe;
+    background-color: transparent;
+    border-style: none;
+    &:focus{
+      outline: none;
+    }
+  }
+  &-inputWrap{
+    display: flex;
+    align-items: center;
+    background-color: #454545;
+    border-radius: 0 5px 5px 0;
+    padding-left: 3px;
+    width: 100%;
   }
 }
-.input-main-inputWrap{
-  display: flex;
-  align-items: center;
-  background-color: #454545;
-  border-radius: 0px 5px 5px 0px;
-  padding-left: 3px;
-  width: 100%;
-}
+
 .changed{
   background-color: #3f2121;
 }

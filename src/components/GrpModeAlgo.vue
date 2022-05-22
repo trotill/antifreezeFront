@@ -6,7 +6,7 @@
              :label="modeStr" @click="changeMode((mode)?0:1)"/>
     </label-container>
     <label-container label="Algo stage">
-      <q-btn class="buttonDashboard" dense :color="(algo!=='auto')?'primary':'green'" text-color="white" icon="psychology" :label="'ST '+algo"/>
+      <q-btn class="buttonDashboard" dense :color="(algo)?'primary':'green'" text-color="white" icon="psychology" :label="'ST '+algo"/>
     </label-container>
   </group-container>
 </template>

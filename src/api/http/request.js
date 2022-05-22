@@ -64,20 +64,24 @@ async function xRequestWLoading (method, api, data) {
   Loading.hide()
   return result
 }
+
+const request = [
+  xRequest, xRequestWLoading
+]
 export default {
-  async get (api) {
-    return xRequestWLoading('GET', api)
+  async get ({ api, loading = true }) {
+    return request[+loading]('GET', api)
   },
 
-  async post (api, data) {
-    return xRequestWLoading('POST', api, data)
+  async post ({ api, data, loading = true }) {
+    return request[+loading]('POST', api, data)
   },
 
-  async put (api, data) {
-    return xRequestWLoading('PUT', api, data)
+  async put ({ api, data, loading = true }) {
+    return request[+loading]('PUT', api, data)
   },
 
-  async delete (api, data) {
-    return xRequestWLoading('DELETE', api, data)
+  async delete ({ api, data, loading = true }) {
+    return request[+loading]('DELETE', api, data)
   }
 }

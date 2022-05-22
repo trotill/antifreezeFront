@@ -1,8 +1,8 @@
 <template>
   <group-container :x-size="width" board-color="#1d1d1d" :y-size="height">
     <div class="controlMain">
-      <div class="dateAverMain">
-        <date-filter :close="dateDialogClose" v-model:filter-date="filterDate"/>
+      <div>
+        <date-filter v-model:filter-date="filterDate"/>
 
       </div>
       <div class="rangeGroupMain">
@@ -14,8 +14,7 @@
       </div>
       <div class="resetAverageMain">
         <q-btn style="height: 40px" outline color="primary" label="Reset" @click="setToDefault" />
-        <q-select outlined dense class="averageMain q-pl-sm" dark standout v-model="srcAverType" :options="averOptions" label="Average" />
-
+        <q-select outlined dense class="averageMain q-pl-sm" dark standout v-model="srcAverType" :options="averOptions" label="Step" />
         <q-btn style="height: 40px; margin-left: 10px"  outline color="primary" label="" icon="check" @click="find"/>
       </div>
     </div>
@@ -23,11 +22,11 @@
 </template>
 
 <script setup>
-//
+
 import { ref } from 'vue'
-import groupContainer from './GroupContainer.vue'
-import dateFilter from './dateFilter.vue'
 import SensorRange from './SensorRange.vue'
+import GroupContainer from './GroupContainer.vue'
+import DateFilter from './DateFilter.vue'
 import { rangeDefault } from '../api/const.js'
 const props = defineProps({
   setFilter: {
@@ -39,7 +38,7 @@ const props = defineProps({
 })
 const averOptions = [
   {
-    label: 'None',
+    label: 'One sec',
     value: 'none'
   },
   {
@@ -62,15 +61,13 @@ const averOptions = [
 
 const range = ref({ ...rangeDefault })
 const srcAverType = ref({
-  label: 'None',
+  label: 'One sec',
   value: 'none'
 })
 const filterDate = ref(null)
 const width = 4
 const height = 4
-function dateDialogClose () {
-  // onRequest({ pagination: pagination.value })
-}
+
 function setToDefault () {
   range.value = { ...rangeDefault }
   filterDate.value = null
@@ -78,29 +75,27 @@ function setToDefault () {
   props.reset()
   find()
 }
+
 function find () {
   const filter = {
     date: filterDate.value,
     average: srcAverType.value,
     sensorRange: range.value
   }
-
   props.setFilter(filter)
 }
+
 </script>
 
 <style scoped>
 .averageMain{
-
   width: 180px;
 }
 .rangeGroupMain{
   display: flex;
   justify-content: space-between;
 }
-.dateAverMain{
 
-}
 .controlMain{
   display: flex;
   flex-direction: column;

@@ -33,6 +33,6 @@ defineProps({
 <style scoped>
 .tempKnob{
   color: #eaeaea!important;
-  margin: 0px!important;
+  margin: 0!important;
 }
 </style>

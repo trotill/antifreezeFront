@@ -95,7 +95,6 @@ const options = {
 
 <style scoped>
 .graphRtMain{
-
   margin: 10px;
 }
 </style>

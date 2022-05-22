@@ -3,7 +3,7 @@
     <q-header v-if="mobile" elevated class="bg-black">
       <q-toolbar>
         <q-btn flat @click="toggleLeftDrawer" round dense icon="menu" />
-        <q-toolbar-title></q-toolbar-title>
+        <q-toolbar-title/>
       </q-toolbar>
     </q-header>
     <q-drawer
@@ -83,15 +83,19 @@ function hideDrawerClick () {
 
 <style lang="scss" scoped>
 .mini-slot {
-  transition: background-color .28s;
-  &:hover {
-    background-color: rgba(0, 0, 0, .04);
+  &-slot {
+    transition: background-color .28s;
+
+    &:hover {
+      background-color: rgba(0, 0, 0, .04);
+    }
+  }
+  &-icon{
+    font-size: 1.718em;
+    margin-top: 18px;
   }
 }
-.mini-icon {
-  font-size: 1.718em;
-  margin-top: 18px;
-}
+
 .leftSide{
   color: white;
   &_main{

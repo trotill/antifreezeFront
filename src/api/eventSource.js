@@ -2,8 +2,6 @@ import { fetchEventSource } from '@microsoft/fetch-event-source'
 import { getToken } from './token.js'
 import httpRoute from './http/route.js'
 
-// class RetriableError extends Error { }
-
 export default function fetchEventSourceWrap (route, commit) {
   return fetchEventSource(route,
     {
@@ -11,8 +9,7 @@ export default function fetchEventSourceWrap (route, commit) {
       headers: {
         access: getToken('access')
       },
-      async onopen (response) {
-        console.log('fetchEventSource response', response)
+      async onopen () {
       },
       onmessage ({ event: topic, data }) {
         switch (topic) {
@@ -31,15 +28,9 @@ export default function fetchEventSourceWrap (route, commit) {
         }
       },
       onclose () {
-      // if the server closes the connection unexpectedly, retry:
-        console.log('fetchEventSource close')
-        httpRoute.whoAmi().then(() => {
-          fetchEventSourceWrap(route, commit)
-        })
-        // throw new RetriableError()
+        httpRoute.whoAmi().then(() => fetchEventSourceWrap(route, commit))
       },
-      onerror (err) {
-        console.log('fetchEventSource err', err)
+      onerror () {
       }
     })
 }

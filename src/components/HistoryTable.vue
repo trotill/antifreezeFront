@@ -10,7 +10,6 @@
       :loading="loading"
       :pagination="pagination"
       :columns="columns"
-      row-key="time"
     >
     </q-table>
   </div>

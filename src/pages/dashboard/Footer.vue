@@ -66,10 +66,7 @@ const store = useStore()
 function toDeviceFabric (device) {
   return function (param) {
     return async function (state) {
-      console.log('state', state)
-
       const paramObj = [...param.split('.'), state].reverse().reduce((old, src) => ({ [src]: old }))
-
       const result = await Rest.setDevData(paramObj, device)
       if (!result?.meta) {
         errorToast(`Error send data ${param}:${state}`)

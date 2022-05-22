@@ -21,7 +21,7 @@
 </template>
 
 <script setup>
-import { computed, ref } from 'vue'
+import { computed } from 'vue'
 const props = defineProps({
   close: {
     type: Function
@@ -30,7 +30,6 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['update:filterDate'])
-// const filterDate = ref(null)
 const formattedFilterDate = computed(() => {
   if (!props.filterDate) {
     return { from: 'YYYY/MM/DD', to: 'YYYY/MM/DD' }

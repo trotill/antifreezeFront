@@ -1,45 +1,56 @@
 import http from './request.js'
 import jshashes from 'jshashes'
 
+const calcPassword = (login, password) => new jshashes.SHA1().b64(login + password)
 export default {
   async login ({ login, password }) {
-    return http.post('/api/login', { login, password: new jshashes.SHA1().b64(login + password) })
+    return http.post({
+      api: '/api/login',
+      data: { login, password: calcPassword(login, password) }
+    })
   },
-  async whoAmi () {
-    return http.get('/api/whoAmi')
+  async whoAmi (loading) {
+    return http.get({ api: '/api/whoAmi', loading })
   },
   async setDevData (data, type) {
-    return http.post(`/api/setDevData/?type=${type}`, data)
+    return http.post({
+      api: `/api/setDevData/?type=${type}`,
+      data
+    })
   },
-  async getSensorList (data) {
-    return http.post('/api/sensorList', data)
+  async getSensorList (data, loading = true) {
+    return http.post({
+      api: '/api/sensorList',
+      data,
+      loading
+    })
   },
   async getEventList (data) {
-    return http.post('/api/eventList', data)
+    return http.post({ api: '/api/eventList', data })
   },
   async getUser () {
-    return http.get('/api/user')
+    return http.get({ api: '/api/user' })
   },
   async getUserList () {
-    return http.get('/api/userList')
+    return http.get({ api: '/api/userList' })
   },
   async setEventRead (eventId) {
-    return http.post(`/api/eventRead/${eventId}`, {})
+    return http.post({ api: `/api/eventRead/${eventId}`, data: {} })
   },
   async eventUnreadCount () {
-    return http.get('/api/eventUnreadCount')
+    return http.get({ api: '/api/eventUnreadCount' })
   },
   async createUser (userData) {
     const { password, login } = userData
-    userData.password = new jshashes.SHA1().b64(login + password)
-    return http.post('/api/user/', userData)
+    userData.password = calcPassword(login, password)
+    return http.post({ api: '/api/user/', data: userData })
   },
   async changeUser (userData) {
     const { password, login } = userData
-    userData.password = new jshashes.SHA1().b64(login + password)
-    return http.put('/api/user/', userData)
+    userData.password = calcPassword(login, password)
+    return http.put({ api: '/api/user/', data: userData })
   },
   async changeUserGroup (userData) {
-    return http.put('/api/userGroup/', userData)
+    return http.put({ api: '/api/userGroup/', data: userData })
   }
 }

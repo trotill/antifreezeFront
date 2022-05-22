@@ -31,7 +31,6 @@ window.onresize = function () {
 
 onMounted(async () => {
   const ami = await store.dispatch('whoAmi')
-  console.log('ami', ami)
   if (!ami) {
     await router.push('/login')
   }

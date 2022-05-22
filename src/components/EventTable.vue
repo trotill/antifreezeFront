@@ -93,7 +93,6 @@ async function onRequest (props) {
   eventListSqlRequest.limit = rowsPerPage || pagination.value.rowsNumber
   eventListSqlRequest.order = [[sortNameTable[sortBy] ?? 'ts', (descending) ? 'desc' : 'asc']]
   if (filterDate.value) {
-    console.log('filterDate.value', filterDate.value)
     const from = filterDate.value?.from ?? new Date(filterDate.value).getTime()
     const to = filterDate.value?.to ?? new Date(filterDate.value).getTime() + 86400000
     eventListSqlRequest.where = {

@@ -1,6 +1,8 @@
 import httpRoute from '../api/http/route.js'
 import { errorToast } from '../api/toast.js'
 
+const deepCopy = (window.structuredClone) || ((v) => JSON.parse(JSON.stringify(v)))
+
 export default {
   state () {
     return {
@@ -79,7 +81,7 @@ export default {
   },
   mutations: {
     whoAmi (state, ami) {
-      state.whoAmi = ami
+      state.whoAmi = { ...ami }
     },
     setMobileMode (state, isMobile) {
       state.isMobile = isMobile
@@ -91,13 +93,13 @@ export default {
       state.authorized = auth
     },
     footerDogState (state, payload) {
-      state.footerDogState = payload
+      state.footerDogState = deepCopy(payload)
     },
     antifreezeState (state, payload) {
-      state.antifreezeState = payload
+      state.antifreezeState = deepCopy(payload)
     },
     newEventState (state, payload) {
-      state.newEventState = payload
+      state.newEventState = deepCopy(payload)
     }
   },
   actions: {
@@ -121,12 +123,10 @@ export default {
     async whoAmi ({ commit }) {
       const result = await httpRoute.whoAmi()
       if (result?.meta) {
-        console.log('whoAmi Succ', result)
         commit('whoAmi', result.data)
         commit('authorized', true)
         return result.data
       } else {
-        console.log('whoAmi Err', result)
         errorToast(result.statusText)
         if (result.status === 401) { commit('authorized', false) }
         return null
