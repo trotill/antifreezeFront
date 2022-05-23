@@ -38,6 +38,7 @@
         />
         <q-input
           filled
+          :readonly="!create"
           v-model="registerNew.login"
           label="Login"
           :rules="loginRules"

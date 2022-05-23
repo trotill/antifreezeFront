@@ -1,7 +1,6 @@
 import httpRoute from '../api/http/route.js'
 import { errorToast } from '../api/toast.js'
-
-const deepCopy = (window.structuredClone) || ((v) => JSON.parse(JSON.stringify(v)))
+import { deepMerge } from '../api/util'
 
 export default {
   state () {
@@ -93,13 +92,13 @@ export default {
       state.authorized = auth
     },
     footerDogState (state, payload) {
-      state.footerDogState = deepCopy(payload)
+      deepMerge(state.footerDogState, payload)
     },
     antifreezeState (state, payload) {
-      state.antifreezeState = deepCopy(payload)
+      deepMerge(state.antifreezeState, payload)
     },
     newEventState (state, payload) {
-      state.newEventState = deepCopy(payload)
+      deepMerge(state.newEventState, payload)
     }
   },
   actions: {
