@@ -66,7 +66,8 @@ async function sensorDataRequest ({ sec = 60, concat = true } = {}) {
       }
     },
     fieldList: ['voltage', 'ts', 'power', 'current', 'temp', 'humidity'],
-    group: ['avgMin']
+    group: ['avgMin'],
+    order: 'desc'
   }, false)
   if (!sensorData?.meta) {
     errorToast('Error read sensor data')

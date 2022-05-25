@@ -37,6 +37,9 @@ export default {
   async setEventRead (eventId) {
     return http.post({ api: `/api/eventRead/${eventId}`, data: {} })
   },
+  async setEventReadAll () {
+    return http.post({ api: '/api/eventReadAll', data: {} })
+  },
   async eventUnreadCount () {
     return http.get({ api: '/api/eventUnreadCount' })
   },

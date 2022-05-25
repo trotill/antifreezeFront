@@ -127,6 +127,7 @@ async function sensorDataRequest () {
     fieldList: ['voltage', 'ts', 'power', 'current', 'temp', 'humidity'],
     group,
     offset: offset.value,
+    order: 'desc',
     limit: props.limit
   }, true)
   if (!sensorData?.meta) {

@@ -18,6 +18,8 @@
         <div class="inputDateMain">
          <Date-filter :close="dateDialogClose" v-model:filter-date="filterDate"/>
         </div>
+        <q-space/>
+        <q-btn  size="20px" outline color="primary" label="Read All" icon="cancel" @click="readAllDlgShow=true"/>
       </template>
       <template v-slot:body="props">
         <q-tr :props="props">
@@ -30,6 +32,21 @@
         </q-tr>
       </template>
     </q-table>
+      <q-dialog v-model="readAllDlgShow">
+        <q-card>
+
+          <q-card-section>
+            <div class="text-h6">Mark unread events as read?</div>
+          </q-card-section>
+
+          <q-card-section class="q-gutter-md" @keypress.enter="onClick">
+            <div class="buttonDlgGroup">
+              <q-btn color="red" @click="markUnreadAll">Mark</q-btn>
+              <q-btn @click="readAllDlgShow=false">Cancel</q-btn>
+            </div>
+          </q-card-section>
+        </q-card>
+      </q-dialog>
     </div>
   </group-container>
 </template>
@@ -53,7 +70,7 @@ const pagination = ref({
 })
 const readyShow = ref(false)
 const filterDate = ref(null)
-
+const readAllDlgShow = ref(false)
 const props = defineProps({
   bigSize: {
     type: Boolean,
@@ -84,6 +101,15 @@ const sortNameTable = {
 }
 function dateDialogClose () {
   onRequest({ pagination: pagination.value })
+}
+async function markUnreadAll () {
+  const result = await rest.setEventReadAll()
+  if (result.statusText) {
+    errorToast(`${result.statusText} (${result.status})`)
+  }
+  await eventDataRequest()
+  store.commit('newEventState', [])
+  readAllDlgShow.value = false
 }
 async function onRequest (props) {
   loading.value = true
@@ -184,7 +210,10 @@ onMounted(async () => {
   background-color: #333333;
   color: #ffffff;
 }
-
+.buttonDlgGroup{
+  display: flex;
+  justify-content: space-between;
+}
 ::v-deep(.q-icon){
   font-size: 40px!important;
 }
