@@ -26,16 +26,21 @@
     </div>
     <div class="flexColumn">
       <div class="flexRow">
-        <grp-wd-mode :bath="wd.relayBath" :mode="wd.footerMode"
+        <grp-wd-mode :bath="fd.relayBath" :mode="fd.footerMode"
                      :change-mode="toDeviceWd('footerMode')"
                      :change-bath-pwr="toDeviceWd('relayBath')"/>
         <grp-wd-reset :reset12-v="toDeviceWd('doRebootDev')" :self-reset="toDeviceWd('reboot')"/>
       </div>
       <div class="flexRow">
-        <grp-string-info label="Reboot 12V line over" :value="wd.countdown"/>
-        <grp-string-info label="Reboot 12V line total" :value="wd.devRebootCntr"/>
+        <grp-string-info label="Reboot 12V line over" :value="fd.countdown"/>
+        <grp-string-info label="Reboot 12V line total" :value="fd.devRebootCntr"/>
       </div>
-      <group-container :x-size="4" :y-size="1" empty/>
+      <group-container :x-size="4" :y-size="1">
+        <div class="lastPacketMain">
+          <div :style="{color:(deadDevice.af)?'red':'#d9d9d9'}">AF {{af.packTime}}</div>
+          <div :style="{color:(deadDevice.fd)?'red':'#d9d9d9'}" >WD {{fd.packTime}}</div>
+        </div>
+      </group-container>
 
     </div>
     <grp-graph-rt :big-size="!store.state.isMobile"/>
@@ -58,7 +63,7 @@ import GrpWdReset from '../../components/GrpWdReset.vue'
 import GrpStringInfo from '../../components/GrpStringInfo.vue'
 import GroupContainer from '../../components/GroupContainer.vue'
 import GrpGraphRt from '../../components/GrpChartRt.vue'
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { useStore } from 'vuex'
 
 const store = useStore()
@@ -77,9 +82,25 @@ function toDeviceFabric (device) {
 
 const toDeviceAf = toDeviceFabric('antifreeze')
 const toDeviceWd = toDeviceFabric('footerDog')
-
+const lastTime = {
+  af: 0,
+  fd: 0
+}
+const deadDevice = ref({
+  af: true,
+  fd: true
+})
+setInterval(() => {
+  deadDevice.value.af = (lastTime.af >= 5)
+  deadDevice.value.fd = (lastTime.fd >= 5)
+  lastTime.af++
+  lastTime.fd++
+}, 1000)
 const af = computed(() => {
+  // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+  lastTime.af = 0
   return {
+    packTime: new Date().toLocaleString(),
     pumpVoltage: { min: 180, max: store.state.antifreezeState.ac0.voltage },
     pumpPower: { min: 0, max: store.state.antifreezeState.ac0.power },
     pumpCurrent: { min: 0, max: store.state.antifreezeState.ac0.current },
@@ -102,8 +123,11 @@ const af = computed(() => {
   }
 })
 
-const wd = computed(() => {
+const fd = computed(() => {
+  // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+  lastTime.fd = 0
   return {
+    packTime: new Date().toLocaleString(),
     relayBath: store.state.footerDogState.relay.relayBath,
     footerMode: store.state.footerDogState.footerMode,
     countdown: store.state.footerDogState.countdown,
@@ -118,7 +142,10 @@ const wd = computed(() => {
   display: flex;
   flex-direction: row
 }
-
+.lastPacketMain{
+  font-size: 20px;
+  color: #d9d9d9;
+}
 .flexColumn{
   display: flex;
   flex-direction: column;

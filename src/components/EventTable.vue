@@ -19,7 +19,7 @@
          <Date-filter :close="dateDialogClose" v-model:filter-date="filterDate"/>
         </div>
         <q-space/>
-        <q-btn  size="20px" outline color="primary" label="Read All" icon="cancel" @click="readAllDlgShow=true"/>
+        <q-btn v-if="bigSize"  size="20px" outline color="primary" label="Read All" icon="cancel" @click="readAllDlgShow=true"/>
       </template>
       <template v-slot:body="props">
         <q-tr :props="props">

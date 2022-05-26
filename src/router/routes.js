@@ -12,11 +12,28 @@ import History from '../pages/dashboard/History.vue'
 export const defaultRoute = '/dashboard/footer'
 const routes = [
   { path: '/:pathMatch(.*)*', name: 'NotFound', component: Login },
-  { path: '/', component: Dashboard },
+  {
+    path: '/',
+    component: Dashboard,
+    children: [
+      {
+        path: '',
+        components: {
+          dashboard: Footer
+        }
+      }
+    ]
+  },
   {
     path: '/dashboard',
     component: Dashboard,
     children: [
+      {
+        path: '',
+        components: {
+          dashboard: Footer
+        }
+      },
       {
         path: 'footer',
         components: {

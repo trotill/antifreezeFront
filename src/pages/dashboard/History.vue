@@ -4,11 +4,12 @@
       <History-control :set-filter="setFilter" :reset="resetFilter"/>
       <History-table :big-size="!store.state.isMobile" :rows="tableData" :loading="loading"/>
     </div>
-    <sensor-chart :big-size="!store.state.isMobile" maxWidth :chart-data="chartData" label="Sensor data"/>
-    <q-page-sticky v-if="tableData.length>0" position="bottom-right" :offset="[5, 5]">
+    <sensor-chart :big-size="!store.state.isMobile"  maxWidth :chart-data="chartData" label="Sensor data"/>
+    <div v-if="store.state.isMobile" class="mobilePadding" />
+    <q-page-sticky v-if="offset!==0"   position="bottom-right" :offset="[5, 5]">
       <q-btn  icon="keyboard_arrow_right"  class="naviButtonMain" color="primary" @click="clickRight"/>
     </q-page-sticky>
-    <q-page-sticky v-if="offset!==0" position="bottom-left" :offset="[5, 5]">
+    <q-page-sticky v-if="tableData.length>0" position="bottom-left" :offset="[5, 5]">
       <q-btn  icon="keyboard_arrow_left" class="naviButtonMain" color="primary"  @click="clickLeft" />
     </q-page-sticky>
   </div>
@@ -45,11 +46,11 @@ const filter = ref({
   }
 })
 function clickRight () {
-  offset.value += props.limit
+  if ((offset.value - props.limit) >= 0) { offset.value -= props.limit }
   sensorDataRequest()
 }
 function clickLeft () {
-  if ((offset.value - props.limit) >= 0) { offset.value -= props.limit }
+  offset.value += props.limit
   sensorDataRequest()
 }
 function setFilter (newFilter) {
@@ -169,5 +170,9 @@ onMounted(async () => {
 }
 .naviButtonMain{
   width:100px
+}
+.mobilePadding{
+  height: 50px;
+  width: 100%;
 }
 </style>

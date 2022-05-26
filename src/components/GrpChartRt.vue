@@ -72,6 +72,7 @@ async function sensorDataRequest ({ sec = 60, concat = true } = {}) {
   if (!sensorData?.meta) {
     errorToast('Error read sensor data')
   } else {
+    sensorData.data.ts.reverse();
     ['voltage', 'power', 'current', 'temp', 'humidity'].forEach((name, idx) => {
       if (concat) {
         if (sensorData.data[name].length > 0) {
@@ -79,6 +80,7 @@ async function sensorDataRequest ({ sec = 60, concat = true } = {}) {
           chartData.datasets[idx].data.push(sensorDataOldestItem)
         }
       } else {
+        sensorData.data[name].reverse()
         chartData.datasets[idx].data = rawToXY(sensorData.data[name], sensorData.data.ts)
       }
     })

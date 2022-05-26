@@ -71,6 +71,18 @@ const options = {
       ticks: {
         color: '#3dcef1'
       },
+      time: {
+        displayFormats: {
+          year: 'YYYY:MM:DD',
+          quarter: 'YYYY:MM:DD',
+          month: 'YYYY:MM:DD',
+          week: 'MM:DD-HH.mm',
+          day: 'MM:DD-HH.mm',
+          hour: 'DD-HH.mm.ss',
+          minute: 'DD-HH.mm.ss',
+          second: 'DD-HH.mm.ss'
+        }
+      },
       grid: {
         display: true,
         color: '#034104'
