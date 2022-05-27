@@ -126,7 +126,6 @@ export default {
         commit('authorized', true)
         return result.data
       } else {
-        errorToast(result.statusText)
         if (result.status === 401) { commit('authorized', false) }
         return null
       }

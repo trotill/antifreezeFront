@@ -37,6 +37,7 @@ async function xRequest (method, api, data = '') {
       return refreshToken().then(result => {
         return result.json().then((tokens) => {
           const { access, refresh } = tokens
+          if (!access) { return { status, statusText } }
           saveToken('access', access)
           saveToken('refresh', refresh)
           return xRequest(method, api, data)
