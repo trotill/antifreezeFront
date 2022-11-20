@@ -3,3 +3,4 @@
 3. Доделать типизацию в файлах с
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-nocheck
+4. Разобраться почему нет у quasar команды serve и почему quasar не вызывается
