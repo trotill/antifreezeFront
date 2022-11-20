@@ -2,8 +2,9 @@ import { getToken, removeTokens, saveToken } from '../token.js'
 import { Loading } from 'quasar'
 
 export async function refreshToken () {
+  const URL = localStorage.getItem('backUrl') ?? ''
   return fetch(
-    '/api/refresh', {
+    URL + '/api/refresh', {
       method: 'GET',
       headers: {
         refresh: getToken('refresh')
@@ -21,8 +22,9 @@ async function xRequest (method, api, data = '') {
       : (headers['content-type'] = 'text/plain', data)
   }
   headers.access = getToken('access')
+  const URL = localStorage.getItem('backUrl') ?? ''
   return fetch(
-    `${api}`, {
+    URL + `${api}`, {
       method,
       headers,
       body

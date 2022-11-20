@@ -1,0 +1,7 @@
+{
+  "name": "antifreeze",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "vue"
+}

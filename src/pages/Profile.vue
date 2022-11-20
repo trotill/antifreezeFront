@@ -190,6 +190,7 @@ onMounted(async () => {
 </script>
 
 <style lang="scss" scoped>
+@import "src/assets/main.scss";
 .profileMain{
   padding-top: 50px;
   display: flex;

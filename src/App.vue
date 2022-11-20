@@ -20,7 +20,8 @@ if (md.mobile()) {
 
 const authorized = computed(() => {
   if (store.state.authorized) {
-    eventSource('/api/sse', store.commit)
+    const URL = localStorage.getItem('backUrl') ?? ''
+    eventSource(URL + '/api/sse', store.commit)
   }
   return store.state.authorized
 })
@@ -44,7 +45,7 @@ onMounted(async () => {
 </template>
 
 <style lang="scss">
-
+@import "src/assets/main.scss";
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

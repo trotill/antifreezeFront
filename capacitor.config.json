@@ -1,0 +1,6 @@
+{
+  "appId": "com.antifreeze.app",
+  "appName": "antifreeze",
+  "webDir": "../back/front",
+  "bundledWebRuntime": false
+}

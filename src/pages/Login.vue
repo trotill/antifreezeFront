@@ -43,6 +43,19 @@
             />
           </template>
         </q-input>
+        <q-input
+          v-if='getPlatform()!=="webb"'
+          v-model="backUrl"
+          label="Backend URL"
+          filled
+          dense
+          counter
+          maxlength="40"
+        >
+          <template #before>
+            <q-icon name="storage" />
+          </template>
+        </q-input>
       </q-card-section>
       <q-separator />
       <q-card-actions align="center">
@@ -72,28 +85,37 @@ import { useRouter } from 'vue-router'
 import { defaultRoute } from '../router/routes.js'
 import RegisterForm from '../components/RegisterForm.vue'
 import { errorToast } from '../api/toast'
+import { Capacitor } from '@capacitor/core'
+
 const router = useRouter()
 const store = useStore()
 const login = ref('')
 const password = ref('')
 const isPwd = ref(true)
 const registerShow = ref(false)
+const backUrlLS = localStorage.getItem('backUrl')
+const backUrl = ref(backUrlLS)
 
+function getPlatform () {
+  return Capacitor.getPlatform()
+}
 function isValid (val) {
   return val.length >= 3
 }
 function isValidAll () {
-  return isValid(password.value) && isValid(login.value)
+  return isValid(password.value) && isValid(login.value) && isValid(backUrl.value)
 }
 
 async function doLogin () {
   if (isValidAll()) {
+    localStorage.setItem('backUrl', backUrl.value)
     if (await store.dispatch('login', { login: login.value, password: password.value })) {
       await store.dispatch('whoAmi')
       await router.push(defaultRoute)
       return
     }
   }
+  localStorage.setItem('backUrl', '')
   errorToast('input error, check login/password')
 }
 

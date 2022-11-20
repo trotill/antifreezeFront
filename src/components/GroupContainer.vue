@@ -34,7 +34,7 @@ const props = defineProps({
 </script>
 
 <style lang="scss" scoped>
-
+@import "src/assets/main.scss";
 .groupContainer{
   padding: 5px;
   &-child-empty{
