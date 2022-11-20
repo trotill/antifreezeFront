@@ -30,13 +30,15 @@ module.exports = configure(function (/* ctx */) {
     // --> boot files are part of "main.js"
     // https://v2.quasar.dev/quasar-cli-vite/boot-files
     boot: [
-      'i18n'
+      'i18n',
+      'shared'
 
     ],
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#css
     css: [
-      'app.scss'
+      'app.scss',
+      'main.scss'
     ],
 
     // https://github.com/quasarframework/quasar/tree/dev/extras
@@ -91,15 +93,18 @@ module.exports = configure(function (/* ctx */) {
     },
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#devServer
     devServer: {
-      // https: true
-      open: true // opens browser window automatically
+      https: false,
+      open: true, // opens browser window automatically
+      proxy: {
+        '^/api/*': 'http://localhost:3000'
+      }
     },
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#framework
     framework: {
       config: {
         loading: {
-          spinner: QSpinnerFacebook,
+          // spinner: QSpinnerFacebook,
           spinnerColor: 'blue',
           delay: 1000
         }

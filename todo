@@ -1,0 +1,5 @@
+1.Выпилить mobile-detect
+2. Поменять jshashes
+3. Доделать типизацию в файлах с
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
