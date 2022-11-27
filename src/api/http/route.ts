@@ -1,36 +1,34 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-nocheck
-
 import http from './request.js'
 import jshashes from 'jshashes'
 
 import { AccountLoginPassword } from 'src/api/types/accountTypes'
+import { XRequestData, XRequestError, XRequestResponse } from 'src/api/types/requestTypes'
 
 const calcPassword = (login:string, password:string) => new jshashes.SHA1().b64(login + password)
 export default {
-  async login ({ login, password }:AccountLoginPassword) {
+  async login ({ login, password }:AccountLoginPassword):Promise<XRequestResponse> {
     return http.post({
       api: '/api/login',
       data: { login, password: calcPassword(login, password) }
     })
   },
-  async whoAmi (loading = false) {
+  async whoAmi (loading = false):Promise<XRequestResponse> {
     return http.get({ api: '/api/whoAmi', loading })
   },
-  async setDevData (data:any, type:string) {
+  async setDevData (data:object, type:string):Promise<XRequestResponse> {
     return http.post({
       api: `/api/setDevData/?type=${type}`,
       data
     })
   },
-  async getSensorList (data:any, loading = true) {
+  async getSensorList (data:object, loading = true):Promise<XRequestResponse> {
     return http.post({
       api: '/api/sensorList',
       data,
       loading
     })
   },
-  async getEventList (data:any) {
+  async getEventList (data:object) {
     return http.post({ api: '/api/eventList', data })
   },
   async getUser () {

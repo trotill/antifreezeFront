@@ -52,7 +52,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue'
+import { onMounted, onUnmounted, ref } from 'vue'
 import GroupContainer from './GroupContainer.vue'
 import rest from 'src/api/http/route'
 import { errorToast } from 'src/api/toast'
@@ -148,8 +148,10 @@ function parseEventDescription ({ value, eventId }) {
   return descriptionTmp
 }
 
-store.$subscribe((mutation) => {
-  if (mutation.type === 'newEventState') {
+const unsubscribe = store.$onAction(({
+  name
+}) => {
+  if (name === 'newEventStateAct') {
     eventDataRequest()
   }
 })
@@ -186,6 +188,10 @@ async function readClick (id) {
 onMounted(async () => {
   await onRequest({ pagination: pagination.value })
   readyShow.value = true
+})
+
+onUnmounted(() => {
+  unsubscribe()
 })
 </script>
 

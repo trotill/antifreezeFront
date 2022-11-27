@@ -6,3 +6,4 @@ export const rangeDefault = {
   temp: { min: -30, max: 40 },
   humidity: { min: 0, max: 100 }
 }
+export const PREFIX = import.meta.env.VITE_DOMAIN_PREFIX ?? ''

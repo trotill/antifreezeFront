@@ -12,17 +12,18 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue'
+import { onMounted, onUnmounted, ref } from 'vue'
 import rest from 'src/api/http/route'
 import { errorToast } from 'src/api/toast'
 import { useAfStore } from 'stores/antifreeze'
 
 const store = useAfStore()
 const unreadEvent = ref(0)
-
-store.$subscribe(async (mutation) => {
-  if (mutation.type === 'newEventState') {
-    await getUnreadEventCount()
+const unsubscribe = store.$onAction(({
+  name
+}) => {
+  if (name === 'newEventStateAct') {
+    getUnreadEventCount()
   }
 })
 
@@ -37,7 +38,9 @@ async function getUnreadEventCount () {
 onMounted(async () => {
   await getUnreadEventCount()
 })
-
+onUnmounted(() => {
+  unsubscribe()
+})
 </script>
 
 <style scoped>

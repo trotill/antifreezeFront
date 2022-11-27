@@ -1,16 +1,14 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-nocheck
-
 import { fetchEventSource } from '@microsoft/fetch-event-source'
 import { getToken } from './token'
 import httpRoute from './http/route'
+import { StoreActions } from 'src/api/types/storeState'
 
-export default function fetchEventSourceWrap (route, store) {
+export default function fetchEventSourceWrap (route:string, store:StoreActions) {
   return fetchEventSource(route,
     {
       method: 'POST',
       headers: {
-        access: getToken('access')
+        access: getToken('access') as string
       },
       onmessage ({ event: topic, data }) {
         switch (topic) {

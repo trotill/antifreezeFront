@@ -1,11 +1,11 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-nocheck
-
 import httpRoute from 'src/api/http/route'
 import { errorToast } from 'src/api/toast'
 import { deepMerge } from 'src/api/util'
 import { defineStore } from 'pinia'
-import { StoreState } from 'src/api/types/storeState'
+import { NewEventState, StoreState } from 'src/api/types/storeState'
+import { FooterDogState } from 'src/api/types/footerDogTypes'
+import { AntifreezeState } from 'src/api/types/antifreezeTypes'
+import { EventState } from 'src/api/types/eventState'
 
 export const useAfStore = defineStore('antifreeze', {
   state: ():StoreState => ({
@@ -85,26 +85,20 @@ export const useAfStore = defineStore('antifreeze', {
 
   },
   actions: {
-    setMobileModeAct (isMobile) {
-      this.isMobile = isMobile
-    },
-    setWindowWidthAct (width) {
-      this.windowWidth = width
-    },
-    footerDogStateAct (payload) {
+    footerDogStateAct (payload:FooterDogState) {
       deepMerge(this.footerDogState, payload)
     },
-    antifreezeStateAct (payload) {
+    antifreezeStateAct (payload:AntifreezeState) {
       deepMerge(this.antifreezeState, payload)
     },
-    newEventStateAct (payload) {
+    newEventStateAct (payload:NewEventState) {
       deepMerge(this.newEventState, payload)
     },
 
     async loginAct ({ login, password }:{login:string, password:string}) {
       const result = await httpRoute.login({ login, password })
 
-      if (result.meta) {
+      if ('meta' in result) {
         if (result.meta.error) {
           this.authorized = false
           errorToast(result.meta.error)
@@ -120,8 +114,9 @@ export const useAfStore = defineStore('antifreeze', {
     },
     async whoAmiAct () {
       const result = await httpRoute.whoAmi()
-      if (result?.meta) {
-        this.whoAmi = result.data
+
+      if ('meta' in result) {
+        this.whoAmi = !!result.data
         this.authorized = true
         return result.data
       } else {

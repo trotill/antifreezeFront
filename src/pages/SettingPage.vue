@@ -53,6 +53,7 @@ import { computed, ref, onMounted } from 'vue'
 import Rest from 'src/api/http/route'
 import { errorToast } from 'src/api/toast'
 import { useAfStore } from 'stores/antifreeze'
+import { errorHandler } from 'src/api/util'
 
 const store = useAfStore()
 
@@ -68,13 +69,11 @@ const heaterWorkTimeChanged = computed(() => antifreeze.value.heaterWorkTime !==
 const pumpWorkTimeInput = ref(0)
 const pumpWorkTimeChanged = computed(() => antifreeze.value.pumpWorkTime !== +pumpWorkTimeInput.value)
 
-async function sendData (device, param, data) {
+async function sendData (device, param, state) {
   const result = await Rest.setDevData({
-    [param]: +data
+    [param]: +state
   }, device)
-  if (!result?.meta) {
-    errorToast(`Error send data ${param}:${data}`)
-  }
+  errorHandler({ result, param, state })
 }
 async function sendClick () {
   (rebootAfChanged.value) && await sendData('footerDog', 'selfRebootCntr', rebootAfInput.value);

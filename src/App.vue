@@ -1,37 +1,45 @@
 <template>
-  <MainPage v-if="authorized" :mobile="!!md.mobile()"/>
+  <MainPage v-if="authorized" :mobile="!!isMobile"/>
   <router-view name="unAuthorized"  />
 </template>
 
 <script setup lang="ts">
 import MainPage from 'pages/MainPage.vue'
-import MobileDetect from 'mobile-detect'
-// import { useStore } from 'vuex'
 import { computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 
-import eventSource from './api/eventSource.js'
+import eventSource from './api/eventSource'
 import { useAfStore } from 'stores/antifreeze'
-
+import { useQuasar } from 'quasar'
+import { FooterDogState } from 'src/api/types/footerDogTypes'
+import { AntifreezeState } from 'src/api/types/antifreezeTypes'
+import { NewEventState, StoreActions } from 'src/api/types/storeState'
+import { PREFIX } from 'src/api/const'
+const $q = useQuasar()
 const router = useRouter()
 const store = useAfStore()
-const md = new MobileDetect(window.navigator.userAgent)
+
+const isMobile = $q.platform.is.mobile
+
 const body = document.getElementsByTagName('body')
 
-if (md.mobile()) {
-  body[0].style.width = 'fit-content'
-  store.setMobileModeAct(true)
-} else store.setMobileModeAct(false)
+store.isMobile = isMobile ?? false
+if (isMobile) { body[0].style.width = 'fit-content' }
 
+const storeActions:StoreActions = {
+  footerDogStateAct: (payload:FooterDogState) => store.footerDogStateAct(payload),
+  antifreezeStateAct: (payload:AntifreezeState) => store.antifreezeStateAct(payload),
+  newEventStateAct: (payload:NewEventState) => store.newEventStateAct(payload)
+}
 const authorized = computed(() => {
   if (store.authorized) {
-    eventSource('/api/sse', store)
+    eventSource(`${PREFIX}/api/sse`, storeActions)
   }
   return store.authorized
 })
 
 window.onresize = function () {
-  store.setWindowWidthAct(window.innerWidth)
+  store.windowWidth = window.innerWidth
 }
 
 onMounted(async () => {

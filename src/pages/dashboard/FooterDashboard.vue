@@ -65,6 +65,7 @@ import GroupContainer from 'src/components/GroupContainer.vue'
 import GrpGraphRt from 'src/components/GrpChartRt.vue'
 import { computed, ref } from 'vue'
 import { useAfStore } from 'stores/antifreeze'
+import { errorHandler } from 'src/api/util'
 
 const store = useAfStore()
 
@@ -73,9 +74,7 @@ function toDeviceFabric (device) {
     return async function (state) {
       const paramObj = [...param.split('.'), state].reverse().reduce((old, src) => ({ [src]: old }))
       const result = await Rest.setDevData(paramObj, device)
-      if (!result?.meta) {
-        errorToast(`Error send data ${param}:${state}`)
-      }
+      errorHandler({ result, param, state })
     }
   }
 }
